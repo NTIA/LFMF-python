@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "proplib-template"  # TODO-TEMPLATE update package name
+dynamic = ["version"]
+description = "TODO-TEMPLATE"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE.md" }
+
+authors = [
+    { name = "The Institute for Telecommunication Sciences", email = "code@ntia.gov" },
+]
+
+keywords = ["TODO-TEMPLATE", "NTIA", "ITS"]
+
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Telecommunications Industry",
+    "License :: Public Domain",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.optional-dependencies]
+tests = [
+    "pytest>=8.2.0,<9.0",
+    "pytest-cov>=6.0.0,<7.0",
+    "tox>=4.23.2,<5.0",         # Keep in sync with tox.ini minimum_version
+]
+dev = [
+    "hatchling>=1.25.0,<2.0",
+    "pre-commit>=4.0.1,<5.0",
+    "proplib-template[tests]",  # TODO-TEMPLATE set to this package
+]
+
+[project.urls]
+"Python Wrapper Source" = "https://github.com/NTIA/TODO-TEMPLATE"
+"Python Wrapper Bug Tracker" = "https://github.com/NTIA/TODO-TEMPLATE/issues"
+"C++ Source" = "https://github.com/NTIA/TODO-TEMPLATE"
+"NTIA GitHub" = "https://github.com/NTIA"
+"ITS Website" = "https://its.ntia.gov"
+
+[tool.hatch.version]
+# TODO-TEMPLATE: Set to this package's `__init__.py`
+path = "src/ITS/PropLibTemplate/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ITS"]
+ignore-vcs = true
+
+[tool.cibuildwheel]
+test-command = "pytest ."
+test-requires = "pytest"

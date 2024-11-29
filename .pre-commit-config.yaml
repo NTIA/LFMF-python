@@ -1,0 +1,41 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-ast
+        types: [file, python]
+      - id: check-case-conflict
+      - id: check-docstring-first
+        types: [file, python]
+      - id: check-merge-conflict
+      - id: check-yaml
+        types: [file, yaml]
+      - id: debug-statements
+        types: [file, python]
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.0
+    hooks:
+      - id: pyupgrade
+        args: ["--py39-plus"]
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        name: isort (python)
+        types: [file, python]
+        args: ["--profile", "black", "--filter-files", "--gitignore"]
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        types: [file, python]
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.42.0
+    hooks:
+      - id: markdownlint
+        types: [file, markdown]
+        exclude: GitHubRepoPublicReleaseApproval.md
+        args: ["--disable", "MD013"]
