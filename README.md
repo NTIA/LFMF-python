@@ -12,6 +12,10 @@
 - The fourth badge displays open GitHub Issues
     - Update the repository name in [gh-issues-badge]
     - Update the repository name in [gh-issues-link]
+- The fifth badge displays and links the Zenodo DOI
+    - Get your repository ID from https://api.github.com/repos/NTIA/{repo}
+    - Or, if private, follow: https://stackoverflow.com/a/47223479
+    - Populate the repository ID in [doi-link] and [doi-badge]
 -->
 [![NTIA/ITS PropLib][proplib-badge]][proplib-link]
 <!--
@@ -19,6 +23,7 @@
 [![PyPI Release][pypi-release-badge]][pypi-release-link]
 [![GitHub Actions Unit Test Status][gh-actions-test-badge]][gh-actions-test-link]
 [![GitHub Issues][gh-issues-badge]][gh-issues-link]
+[![DOI][doi-badge]][doi-link]
 -->
 [proplib-badge]: https://img.shields.io/badge/PropLib-badge?label=%F0%9F%87%BA%F0%9F%87%B8%20NTIA%2FITS&labelColor=162E51&color=D63E04
 [proplib-link]: https://ntia.github.io/propagation-library-wiki
@@ -28,6 +33,8 @@
 [pypi-release-link]: https://pypi.org/project/TODO-TEMPLATE
 [gh-issues-badge]: https://img.shields.io/github/issues/NTIA/TODO-TEMPLATE?logo=github&label=Issues&labelColor=162E51
 [gh-issues-link]: https://github.com/NTIA/TODO-TEMPLATE/issues
+[doi-badge]: https://zenodo.org/badge/TODO-TEMPLATE.svg
+[doi-link]: https://zenodo.org/badge/latestdoi/TODO-TEMPLATE
 
 <!-- TODO-TEMPLATE: Replace the below description with one for your software -->
 This code repository is a template repository for Python wrappers in the NTIA/ITS
