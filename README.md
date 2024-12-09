@@ -79,11 +79,11 @@ library from C++ source code; see relevant build instructions
 [here](https://github.com/NTIA/LFMF?tab=readme-ov-file#configure-and-build).
 
 1. Optionally, configure and activate a virtual environment using a tool such as
-[`venv`](https://docs.python.org/3/library/venv.html) or
-[conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+[`venv`](https://docs.python.org/3/library/venv.html) or 
+[`conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
 
-2. Clone this repository, then initialize the Git submodule containing the test data.
+2. Clone the parent repository, then initialize the Git submodule containing the Python wrapper. This repository structure makes test data available to the Python wrapper.
 
     ```cmd
     # Clone the repository
@@ -97,19 +97,22 @@ library from C++ source code; see relevant build instructions
     git submodule update
     ```
 
+3. Compile the C++ library for your platform, following instructions [here](https://github.com/NTIA/LFMF?tab=readme-ov-file#configure-and-build). Following these instructions should automatically copy the shared library into the location required by the Python wrapper.
+    
     **OR**
 
     Download the shared library (`.dll`, `.so`, or `.dylib`) from a
-[GitHub Release](https://github.com/NTIA/LFMF-python/releases). Then place the
-downloaded file in `src/LFMF-python/MODEL-NAMESPACE/` (alongside `__init__.py`).
+[GitHub Release](https://github.com/NTIA/LFMF/releases). Then place the
+downloaded file in `src/ITS/Propagation/LFMF/` (alongside `__init__.py`).
 
-1. Install the local package and development dependencies into your current environment:
+
+4. Install the local package and development dependencies into your current environment:
 
     ```cmd
     pip install .[dev]
     ```
 
-1. To build the wheel for your platform:
+5. To build the wheel for your platform:
 
     ```cmd
     hatchling build
@@ -130,9 +133,8 @@ pytest
 LFMF-python: Update references
 
 - [ITS Propagation Library Wiki](https://ntia.github.io/propagation-library-wiki)
-- [LFMF-python Wiki Page](https://ntia.github.io/propagation-library-wiki/models/LFMF-python)
-- [`LFMF-python` C++ API Reference](https://ntia.github.io/LFMF-python)
-- LFMF-python: Link supporting documentation such as ITU-R Recommendations, NTIA reports, etc.
+- [LFMF Wiki Page](https://ntia.github.io/propagation-library-wiki/models/LFMF)
+- [`ITS.Propagation.LFMF` C++ API Reference](https://ntia.github.io/LFMF)
 
 ## Contact ##
 
