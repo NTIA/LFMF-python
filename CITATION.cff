@@ -1,12 +1,13 @@
 cff-version: 1.2.0
 title: >-
-  Low Frequency / Medium Frequency (LF/MF) Propagation Model
+  Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python Wrapper
 message: Please cite this software using these metadata.
 type: software
 authors:
   - family-names: Kozma
     given-names: William
     name-suffix: Jr.
+    email: wkozma@ntia.gov
     affiliation: >-
       U.S. Department of Commerce, National
       Telecommunications and Information Administration,
