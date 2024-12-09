@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "proplib-template"         # TODO-TEMPLATE update package name
+name = "proplib-template"         # LFMF-python update package name
 dynamic = ["version"]
-description = "TODO-TEMPLATE"
+description = "LFMF-python"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE.md" }
@@ -14,7 +14,12 @@ authors = [
     { name = "The Institute for Telecommunication Sciences", email = "code@ntia.gov" },
 ]
 
-keywords = ["TODO-TEMPLATE", "NTIA", "ITS"]
+keywords = [
+    "propagation",
+    "LFMF",
+    "NTIA",
+    "ITS",
+]
 
 classifiers = [
     "Intended Audience :: Science/Research",
@@ -42,19 +47,18 @@ tests = [
 dev = [
     "hatchling>=1.25.0,<2.0",
     "pre-commit>=4.0.1,<5.0",
-    "proplib-template[tests]", # TODO-TEMPLATE set to this package
+    "LFMF[tests]",
 ]
 
 [project.urls]
-"Python Wrapper Source" = "https://github.com/NTIA/TODO-TEMPLATE"
-"Python Wrapper Bug Tracker" = "https://github.com/NTIA/TODO-TEMPLATE/issues"
-"C++ Source" = "https://github.com/NTIA/TODO-TEMPLATE"
+"Python Wrapper Source" = "https://github.com/NTIA/LFMF-python"
+"Python Wrapper Bug Tracker" = "https://github.com/NTIA/LFMF-python/issues"
+"C++ Source" = "https://github.com/NTIA/LFMF"
 "NTIA GitHub" = "https://github.com/NTIA"
 "ITS Website" = "https://its.ntia.gov"
 
 [tool.hatch.version]
-# TODO-TEMPLATE: Set to this package's `__init__.py`
-path = "src/ITS/PropLibTemplate/__init__.py"
+path = "src/ITS/Propagation/LFMF/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/ITS"]
@@ -67,7 +71,7 @@ test-requires = "pytest"
 [tool.tox]
 min_version = "4.21.1"
 env_list = ["3.9", "3.10", "3.11", "3.12", "3.13"]
-skip_missing_interpreters = true                   # TODO override this in GHA
+skip_missing_interpreters = true
 
 [tool.tox.env.testenv]
 description = "Run tests with pytest and generate coverage report"

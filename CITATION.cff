@@ -1,17 +1,17 @@
 cff-version: 1.2.0
 title: >-
-  TODO-TEMPLATE, Python Wrapper
+  Low Frequency / Medium Frequency (LF/MF) Propagation Model
 message: Please cite this software using these metadata.
 type: software
 authors:
-  - given-names: TODO-TEMPLATE
-    family-names: TODO-TEMPLATE
-    email: TODO-TEMPLATE@ntia.gov
+  - family-names: Kozma
+    given-names: William
+    name-suffix: Jr.
     affiliation: >-
       U.S. Department of Commerce, National
       Telecommunications and Information Administration,
       Institute for Telecommunication Sciences
-    orcid: 'https://orcid.org/0000-0000-0000-0000'
+    orcid: 'https://orcid.org/0000-0002-7417-4009'
   - name: >-
       U.S. Department of Commerce, National
       Telecommunications and Information Administration,
@@ -24,9 +24,11 @@ authors:
     alias: NTIA/ITS
     email: code@ntia.gov
     website: 'https://its.ntia.gov'
-repository-code: 'https://github.com/NTIA/TODO-TEMPLATE'
-url: 'https://ntia.github.io/propagation-library-wiki/models/TODO-TEMPLATE/'
+repository-code: 'https://github.com/NTIA/LFMF-python'
+url: 'https://ntia.github.io/propagation-library-wiki/models/LFMF'
 keywords:
+  - its
   - propagation
-  - TODO-TEMPLATE
+  - lfmf
 version: 1.0.0
+date-released: ''
