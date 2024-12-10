@@ -4,16 +4,6 @@ from enum import IntEnum
 from .proplib_loader import PropLibCDLL
 
 
-class Polarization(IntEnum):
-    POLARIZATION__HORIZONTAL = 0
-    POLARIZATION__VERTICAL = 1
-
-
-class SolutionMethod(IntEnum):
-    METHOD__FLAT_EARTH_CURVE = 0
-    METHOD__RESIDUE_SERIES = 1
-
-
 class Result(Structure):
     # C Struct for library outputs
     _fields_ = [('A_btl__db', c_double),
