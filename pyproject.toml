@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "proplib-template"         # LFMF-python update package name
+name = "LFMF"         # LFMF-python update package name
 dynamic = ["version"]
-description = "LFMF-python"
+description = "Python wrapper for Low Frequency / Medium Frequency (LF/MF) Propagation Model"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { file = "LICENSE.md" }
