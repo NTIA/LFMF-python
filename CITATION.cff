@@ -25,9 +25,8 @@ authors:
     alias: NTIA/ITS
     email: code@ntia.gov
     website: 'https://its.ntia.gov'
-repository-code: 'https://github.com/NTIA/LFMF'
+repository-code: 'https://github.com/NTIA/LFMF-python'
 url: 'https://ntia.github.io/propagation-library-wiki/models/LFMF'
-repository: 'https://github.com/NTIA/LFMF'
 keywords:
   - its
   - propagation
