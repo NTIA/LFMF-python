@@ -4,15 +4,22 @@ title: >-
 message: Please cite this software using these metadata.
 type: software
 authors:
-  - family-names: Kozma
-    given-names: William
-    name-suffix: Jr.
+  - family-names: Heroy
+    given-names: Chen
     affiliation: >-
       U.S. Department of Commerce, National
       Telecommunications and Information Administration,
       Institute for Telecommunication Sciences
-    orcid: 'https://orcid.org/0000-0002-7417-4009'
-    email: wkozma@ntia.gov
+    orcid: 'https://orcid.org/0009-0006-8728-4502'
+    email: cheroy.ctr@ntia.gov
+  - family-names: Romaniello
+    given-names: Anthony W.
+    affiliation: >-
+      U.S. Department of Commerce, National
+      Telecommunications and Information Administration,
+      Institute for Telecommunication Sciences
+    orcid: 'https://orcid.org/0000-0001-8437-6504'
+    email: aromaniello@ntia.gov
   - name: >-
       U.S. Department of Commerce, National
       Telecommunications and Information Administration,
@@ -31,4 +38,5 @@ keywords:
   - its
   - propagation
   - lfmf
-version: 1.0.0
+  - antennas
+version: 1.1.0
