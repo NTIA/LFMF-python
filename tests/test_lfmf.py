@@ -1,23 +1,8 @@
-import csv
-from pathlib import Path
-
 import pytest
 
 from ITS.Propagation import LFMF
 
-
-# Test data is expected to exist in parent repository tests/data
-TEST_DATA_DIR = (Path(__file__).parent.parent.parent.parent / "tests") / "data"
-ABSTOL__DB = 1.0E-1  # Absolute tolerance, in dB, to ensure outputs match expected value
-
-
-def read_csv_test_data(filename: str):
-    with open(TEST_DATA_DIR / filename) as f:
-        reader = csv.reader(f)
-        next(reader)  # Skip header row
-        for row in reader:
-            # yields (*inputs, rtn, *outputs)
-            yield tuple(map(float, row[:-5])), int(row[-5]), tuple(map(float, row[-4:]))
+from .test_utils import ABSTOL__DB, read_csv_test_data
 
 
 @pytest.mark.parametrize(
