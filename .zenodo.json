@@ -15,7 +15,6 @@
         }
     ],
     "description": "This code repository contains a Python wrapper for the NTIA/ITS implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model.",
-    "access_right": "open",
     "keywords": [
         "propagation",
         "communications",

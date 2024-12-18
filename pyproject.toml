@@ -51,6 +51,7 @@ dev = [
 ]
 
 [project.urls]
+"PropLib Wiki" = "https://ntia.github.io/propagation-library-wiki/models/LFMF/"
 "Python Wrapper Source" = "https://github.com/NTIA/LFMF-python"
 "Python Wrapper Bug Tracker" = "https://github.com/NTIA/LFMF-python/issues"
 "C++ Source" = "https://github.com/NTIA/LFMF"
