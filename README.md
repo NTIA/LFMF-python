@@ -1,56 +1,34 @@
-# Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python Wrapper #
+# Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python® Wrapper #
 
-<!-- LFMF-python: README BADGES
-
-- The first badge links to the PropLib Wiki and does not need to be edited
-- The second badge automatically displays and links to the most recent PyPI Release.
-    - Make sure to update the [pypi-release-badge] and [pypi-release-link] URLs with
-      your package name on PyPI (NOT the repository name on GitHub!)
-    - This can only be added once there is a published version of the package on PyPI
-- The third badge is the Tox GitHub actions status.
-    - Update the repository name in [gh-actions-test-badge] and [gh-actions-test-link]
-- The fourth badge displays open GitHub Issues
-    - Update the repository name in [gh-issues-badge]
-    - Update the repository name in [gh-issues-link]
-- The fifth badge displays and links the Zenodo DOI
-    - Get your repository ID from https://api.github.com/repos/NTIA/{repo}
-    - Or, if private, follow: https://stackoverflow.com/a/47223479
-    - Populate the repository ID in [doi-link] and [doi-badge]
--->
 [![NTIA/ITS PropLib][proplib-badge]][proplib-link]
 [![GitHub Issues][gh-issues-badge]][gh-issues-link]
-<!--
-[![GitHub Release][gh-releases-badge]][gh-releases-link]
 [![PyPI Release][pypi-release-badge]][pypi-release-link]
 [![GitHub Actions Unit Test Status][gh-actions-test-badge]][gh-actions-test-link]
 [![DOI][doi-badge]][doi-link]
--->
+
 [proplib-badge]: https://img.shields.io/badge/PropLib-badge?label=%F0%9F%87%BA%F0%9F%87%B8%20NTIA%2FITS&labelColor=162E51&color=D63E04
 [proplib-link]: https://ntia.github.io/propagation-library-wiki
 [gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/LFMF-python/tox.yml?branch=main&logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
 [gh-actions-test-link]: https://github.com/NTIA/LFMF-python/actions/workflows/tox.yml
-[pypi-release-badge]: https://img.shields.io/pypi/v/LFMF-python?logo=pypi&logoColor=ffffff&label=Release&labelColor=162E51&color=D63E04
-[pypi-release-link]: https://pypi.org/project/LFMF-python
+[pypi-release-badge]: https://img.shields.io/pypi/v/proplib-lfmf?logo=pypi&logoColor=ffffff&label=Release&labelColor=162E51&color=D63E04
+[pypi-release-link]: https://pypi.org/project/proplib-lfmf
 [gh-issues-badge]: https://img.shields.io/github/issues/NTIA/LFMF-python?logo=github&label=Issues&labelColor=162E51
 [gh-issues-link]: https://github.com/NTIA/LFMF-python/issues
-[doi-badge]: https://zenodo.org/badge/LFMF-python.svg
-[doi-link]: https://zenodo.org/badge/latestdoi/LFMF-python
+[doi-badge]: https://zenodo.org/badge/896234119.svg
+[doi-link]: https://zenodo.org/badge/latestdoi/896234119
 
-This code repository contains the U.S. Reference Software Implementation of
-Low Frequency / Medium Frequency (LF/MF) Propagation Model. This Python package wraps the
-[base C++ implementation](https://github.com/NTIA/LFMF).
+This code repository contains a Python wrapper for the NTIA/ITS implementation of the
+Low Frequency / Medium Frequency (LF/MF) Propagation Model. LF/MF predicts basic transmission
+loss in the frequency range 0.01 - 30 MHz for propagation paths over a smooth Earth and antenna
+heights less than 50 meters. This Python package wraps the [NTIA/ITS C++ implementation](https://github.com/NTIA/LFMF).
 
 ## Getting Started ##
 
-> [!NOTE]
-> The text below indicates this package is distributed on PyPi,
-> however it is not yet uploaded. A link will be provided here when available.
-
-This software is distributed on [PyPI](#) and is easily installable
+This software is distributed on [PyPI](https://pypi.org/project/proplib-lfmf) and is easily installable
 using the following command.
 
 ```cmd
-pip install LFMF
+pip install proplib-lfmf
 ```
 
 General information about using this model is available on
@@ -79,16 +57,15 @@ library from C++ source code; see relevant build instructions
 [here](https://github.com/NTIA/LFMF?tab=readme-ov-file#configure-and-build).
 
 1. Optionally, configure and activate a virtual environment using a tool such as
-[`venv`](https://docs.python.org/3/library/venv.html) or 
+[`venv`](https://docs.python.org/3/library/venv.html) or
 [`conda`](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
-
-2. Clone the parent repository, then initialize the Git submodule containing the Python wrapper. This repository structure makes test data available to the Python wrapper.
+1. Clone this repository, then initialize the Git submodule containing the test data.
 
     ```cmd
     # Clone the repository
-    git clone https://github.com/NTIA/LFMF
-    cd LFMF
+    git clone https://github.com/NTIA/LFMF-python
+    cd LFMF-python
 
     # Initialize Git submodule containing test data
     git submodule init
@@ -97,22 +74,17 @@ library from C++ source code; see relevant build instructions
     git submodule update
     ```
 
-3. Compile the C++ library for your platform, following instructions [here](https://github.com/NTIA/LFMF?tab=readme-ov-file#configure-and-build). Following these instructions should automatically copy the shared library into the location required by the Python wrapper.
-    
-    **OR**
-
-    Download the shared library (`.dll`, `.so`, or `.dylib`) from a
+1. Download the shared library (`.dll`, `.so`, or `.dylib`) from a
 [GitHub Release](https://github.com/NTIA/LFMF/releases). Then place the
 downloaded file in `src/ITS/Propagation/LFMF/` (alongside `__init__.py`).
 
-
-4. Install the local package and development dependencies into your current environment:
+1. Install the local package and development dependencies into your current environment:
 
     ```cmd
     pip install .[dev]
     ```
 
-5. To build the wheel for your platform:
+1. To build the wheel for your platform:
 
     ```cmd
     hatchling build
@@ -130,11 +102,14 @@ pytest
 
 ## References ##
 
-LFMF-python: Update references
-
 - [ITS Propagation Library Wiki](https://ntia.github.io/propagation-library-wiki)
 - [LFMF Wiki Page](https://ntia.github.io/propagation-library-wiki/models/LFMF)
 - [`ITS.Propagation.LFMF` C++ API Reference](https://ntia.github.io/LFMF)
+- Bremmer, H. "Terrestrial Radio Waves" _Elsevier_, 1949.
+- DeMinco, N. "Medium Frequency Propagation Prediction Techniques and Antenna Modeling for Intelligent Transportation Systems (ITS) Broadcast Applications", [_NTIA Report 99-368_](https://www.its.bldrdoc.gov/publications/2399.aspx), August 1999
+- DeMinco, N. "Ground-wave Analysis Model For MF Broadcast System", [_NTIA Report 86-203_](https://www.its.bldrdoc.gov/publications/2226.aspx), September 1986
+- Sommerfeld, A. "The propagation of waves in wireless telegraphy", _Ann. Phys._, 1909, 28, p.665
+- Wait, J. "Radiation From a Vertical Antenna Over a Curved Stratified Ground", _Journal of Research of the National Bureau of Standards_.  Vol 56, No. 4, April 1956. Research Paper 2671
 
 ## Contact ##
 
