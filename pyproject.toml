@@ -1,0 +1,92 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "LFMF"
+dynamic = ["version"]
+description = "A Python wrapper for the NTIA/ITS implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { file = "LICENSE.md" }
+
+authors = [
+    { name = "The Institute for Telecommunication Sciences", email = "code@ntia.gov" },
+]
+
+keywords = [
+    "propagation",
+    "LFMF",
+    "NTIA",
+    "ITS",
+]
+
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Telecommunications Industry",
+    "License :: Public Domain",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.optional-dependencies]
+tests = [
+    "pytest>=8.2.0,<9.0",
+    "pytest-cov>=6.0.0,<7.0",
+    "tox>=4.21.1,<5.0",       # Keep in sync with tool.tox.min_version
+]
+dev = [
+    "hatchling>=1.25.0,<2.0",
+    "pre-commit>=4.0.1,<5.0",
+    "LFMF[tests]",
+]
+
+[project.urls]
+"Python Wrapper Source" = "https://github.com/NTIA/LFMF-python"
+"Python Wrapper Bug Tracker" = "https://github.com/NTIA/LFMF-python/issues"
+"C++ Source" = "https://github.com/NTIA/LFMF"
+"NTIA GitHub" = "https://github.com/NTIA"
+"ITS Website" = "https://its.ntia.gov"
+
+[tool.hatch.version]
+path = "src/ITS/Propagation/LFMF/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ITS"]
+ignore-vcs = true
+
+[tool.cibuildwheel]
+test-command = "pytest ."
+test-requires = "pytest"
+
+[tool.tox]
+min_version = "4.21.1"
+env_list = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+skip_missing_interpreters = true
+
+[tool.tox.env.testenv]
+description = "Run tests with pytest and generate coverage report"
+extras = "tests"
+commands = [
+    "pytest",
+    "--cov-report=term-missing",
+    "--no-cov-on-fail",
+    "--cov",
+    { replace = "posargs", extend = true },
+]
+
+[tool.tox.gh.python] # tox-gh config for GitHub Actions testing
+"3.9" = ["3.9"]
+"3.10" = ["3.10"]
+"3.11" = ["3.11"]
+"3.12" = ["3.12"]
+"3.13" = ["3.13"]

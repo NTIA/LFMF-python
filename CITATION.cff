@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+title: >-
+  Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python Wrapper
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - family-names: Heroy
+    given-names: Chen
+    affiliation: >-
+      U.S. Department of Commerce, National
+      Telecommunications and Information Administration,
+      Institute for Telecommunication Sciences
+    orcid: 'https://orcid.org/0009-0006-8728-4502'
+    email: cheroy.ctr@ntia.gov
+  - family-names: Romaniello
+    given-names: Anthony W.
+    affiliation: >-
+      U.S. Department of Commerce, National
+      Telecommunications and Information Administration,
+      Institute for Telecommunication Sciences
+    orcid: 'https://orcid.org/0000-0001-8437-6504'
+    email: aromaniello@ntia.gov
+  - name: >-
+      U.S. Department of Commerce, National
+      Telecommunications and Information Administration,
+      Institute for Telecommunication Sciences
+    address: 325 Broadway
+    city: Boulder
+    country: US
+    post-code: '80305'
+    region: Colorado
+    alias: NTIA/ITS
+    email: code@ntia.gov
+    website: 'https://its.ntia.gov'
+repository-code: 'https://github.com/NTIA/LFMF-python'
+url: 'https://ntia.github.io/propagation-library-wiki/models/LFMF'
+keywords:
+  - its
+  - propagation
+  - lfmf
+  - antennas
+version: 1.1.0
