@@ -28,5 +28,5 @@ your version of this Markdown document to that branch, then create a pull reques
 for that branch. The following must login to GitHub and approve that pull request
 before the pull request can be merged and this repo made public:
 
-* Project Lead: Kozma Jr, William
+* Project Lead: William Kozma, Jr.
 * Supervising Division Chief or Release Authority: Chris Anderson
