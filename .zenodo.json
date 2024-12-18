@@ -1,36 +1,43 @@
 {
     "upload_type": "software",
     "publication_date": "TODO-TEMPLATE",
-    "title": "TODO-TEMPLATE",
+    "title": "Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python Wrapper",
     "creators": [
         {
-            "name": "TODO-TEMPLATE",
+            "name": "Heroy, Chen",
             "affiliation": "U.S. Department of Commerce, National Telecommunications and Information Administration, Institute for Telecommunication Sciences",
-            "orcid": "TODO-TEMPLATE"
+            "orcid": "0009-0006-8728-4502"
+        },
+        {
+            "name": "Romaniello, Anthony W.",
+            "affiliation": "U.S. Department of Commerce, National Telecommunications and Information Administration, Institute for Telecommunication Sciences",
+            "orcid": "0000-0001-8437-6504"
         }
     ],
-    "description": "TODO-TEMPLATE. Make this the same as the abstract.",
+    "description": "This code repository contains a Python wrapper for the NTIA/ITS implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model.",
     "access_right": "open",
     "keywords": [
-        "TODO-TEMPLATE",
-        "TODO-TEMPLATE"
+        "propagation",
+        "communications",
+        "antennas",
+        "radio wave propagation"
     ],
     "related_identifiers": [
         {
-            "identifier": "https://github.com/NTIA/TODO-TEMPLATE",
+            "identifier": "https://github.com/NTIA/LFMF",
             "relation": "isSupplementTo",
             "resource_type": "software"
         },
         {
-            "identifier": "https://github.com/NTIA/TODO-TEMPLATE-test-data",
+            "identifier": "https://github.com/NTIA/LFMF-test-data",
             "relation": "isSupplementedBy",
             "resource_type": "dataset"
         },
         {
-            "identifier": "https://ntia.github.io/propagation-library-wiki/models/TODO-TEMPLATE/",
+            "identifier": "https://ntia.github.io/propagation-library-wiki/models/LFMF/",
             "relation": "isDocumentedBy",
             "resource_type": "softwaredocumentation"
         }
     ],
-    "version": "TODO-TEMPLATE"
+    "version": "1.1.0"
 }
