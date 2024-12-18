@@ -6,10 +6,12 @@ from .proplib_loader import PropLibCDLL
 
 class Result(Structure):
     # C Struct for library outputs
-    _fields_ = [('A_btl__db', c_double),
-                ('E__dBuVm', c_double),
-                ('P_rx__dbm', c_double),
-                ('method', c_int)]
+    _fields_ = [
+        ("A_btl__db", c_double),
+        ("E__dBuVm", c_double),
+        ("P_rx__dbm", c_double),
+        ("method", c_int),
+    ]
 
 
 # Load the shared library
@@ -18,21 +20,30 @@ lib = PropLibCDLL("LFMF-1.1")
 # Define function prototypes
 lib.LFMF.restype = c_int
 lib.LFMF.argtypes = (
-     c_double,
-     c_double,
-     c_double,
-     c_double,
-     c_double,
-     c_double,
-     c_double,
-     c_double,
-     c_int,
-     POINTER(Result),
+    c_double,
+    c_double,
+    c_double,
+    c_double,
+    c_double,
+    c_double,
+    c_double,
+    c_double,
+    c_int,
+    POINTER(Result),
 )
 
 
-def LFMF(h_tx__meter: float, h_rx__meter: float, f__mhz: float, P_tx__watt: float,
-         N_s: float, d__km: float, epsilon: float, sigma: float, pol: int) -> Result:
+def LFMF(
+    h_tx__meter: float,
+    h_rx__meter: float,
+    f__mhz: float,
+    P_tx__watt: float,
+    N_s: float,
+    d__km: float,
+    epsilon: float,
+    sigma: float,
+    pol: int,
+) -> Result:
     """
     Compute the Low Frequency / Medium Frequency (LF/MF) propagation prediction
 
@@ -63,7 +74,7 @@ def LFMF(h_tx__meter: float, h_rx__meter: float, f__mhz: float, P_tx__watt: floa
             c_double(epsilon),
             c_double(sigma),
             c_int(int(pol)),
-            byref(result)
+            byref(result),
         )
     )
 
