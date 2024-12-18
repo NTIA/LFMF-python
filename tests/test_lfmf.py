@@ -28,7 +28,7 @@ def test_lfmf(inputs, rtn, expected):
     if rtn == 0:
         result = LFMF.LFMF(*inputs)
         assert result.A_btl__db == pytest.approx(expected[0], abs=ABSTOL__DB)
-        assert result.E_dBuVm == pytest.approx(expected[1], abs=ABSTOL__DB)
+        assert result.E__dBuVm == pytest.approx(expected[1], abs=ABSTOL__DB)
         assert result.P_rx__dbm == pytest.approx(expected[2], abs=ABSTOL__DB)
         assert result.method == int(expected[3])
     else:

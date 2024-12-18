@@ -7,7 +7,7 @@ from .proplib_loader import PropLibCDLL
 class Result(Structure):
     # C Struct for library outputs
     _fields_ = [('A_btl__db', c_double),
-                ('E_dBuVm', c_double),
+                ('E__dBuVm', c_double),
                 ('P_rx__dbm', c_double),
                 ('method', c_int)]
 
