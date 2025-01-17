@@ -14,14 +14,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
-# TODO-TEMPLATE: Populate environment variables below
-#     LIBRARY_BASE_REPO: The base repo with the C++ implementation, e.g. "NTIA/itm"
-#     LIBRARY_RELEASE_TAG: The Git tag identifying a release. Can be a pre-release.
-#     LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed
 env:
-    LIBRARY_BASE_REPO: NTIA/proplib-template
-    LIBRARY_RELEASE_TAG: v1.0
-    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate/'
+    LIBRARY_BASE_REPO: NTIA/LFMF
+    LIBRARY_RELEASE_TAG: v1.0-rc.1
+    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/Propagation/LFMF'
 
 jobs:
   run-all-tests:
