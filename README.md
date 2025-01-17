@@ -8,8 +8,8 @@
 
 [proplib-badge]: https://img.shields.io/badge/PropLib-badge?label=%F0%9F%87%BA%F0%9F%87%B8%20NTIA%2FITS&labelColor=162E51&color=D63E04
 [proplib-link]: https://ntia.github.io/propagation-library-wiki
-[gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/LFMF-python/tox.yml?branch=main&logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
-[gh-actions-test-link]: https://github.com/NTIA/LFMF-python/actions/workflows/tox.yml
+[gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/LFMF-python/pytest.yml?branch=main&logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
+[gh-actions-test-link]: https://github.com/NTIA/LFMF-python/actions/workflows/pytest.yml
 [pypi-release-badge]: https://img.shields.io/pypi/v/proplib-lfmf?logo=pypi&logoColor=ffffff&label=Release&labelColor=162E51&color=D63E04
 [pypi-release-link]: https://pypi.org/project/proplib-lfmf
 [gh-issues-badge]: https://img.shields.io/github/issues/NTIA/LFMF-python?logo=github&label=Issues&labelColor=162E51

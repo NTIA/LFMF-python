@@ -42,7 +42,6 @@ classifiers = [
 tests = [
     "pytest>=8.2.0,<9.0",
     "pytest-cov>=6.0.0,<7.0",
-    "tox>=4.21.1,<5.0",       # Keep in sync with tool.tox.min_version
 ]
 dev = [
     "hatchling>=1.25.0,<2.0",
@@ -68,26 +67,3 @@ ignore-vcs = true
 [tool.cibuildwheel]
 test-command = "pytest ."
 test-requires = "pytest"
-
-[tool.tox]
-min_version = "4.21.1"
-env_list = ["3.9", "3.10", "3.11", "3.12", "3.13"]
-skip_missing_interpreters = true
-
-[tool.tox.env.testenv]
-description = "Run tests with pytest and generate coverage report"
-extras = "tests"
-commands = [
-    "pytest",
-    "--cov-report=term-missing",
-    "--no-cov-on-fail",
-    "--cov",
-    { replace = "posargs", extend = true },
-]
-
-[tool.tox.gh.python] # tox-gh config for GitHub Actions testing
-"3.9" = ["3.9"]
-"3.10" = ["3.10"]
-"3.11" = ["3.11"]
-"3.12" = ["3.12"]
-"3.13" = ["3.13"]

@@ -43,6 +43,7 @@ lib.err_check(return_code)
 """
 
 import platform
+import struct
 from ctypes import *
 from pathlib import Path
 
@@ -71,7 +72,15 @@ class PropLibCDLL(CDLL):
         """
         # Load the compiled library
         if platform.uname()[0] == "Windows":
-            lib_name += ".dll"
+            arch = struct.calcsize("P") * 8  # 32 or 64
+            if arch == 64:
+                lib_name += "-x64.dll"
+            elif arch == 32:
+                lib_name += "-x86.dll"
+            else:
+                raise RuntimeError(
+                    "Failed to determine system architecture for DLL loading"
+                )
         elif platform.uname()[0] == "Linux":
             lib_name += ".so"
         elif platform.uname()[0] == "Darwin":

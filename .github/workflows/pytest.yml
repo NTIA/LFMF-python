@@ -1,0 +1,97 @@
+name: Test with pytest
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+# TODO-TEMPLATE: Populate environment variables below
+#     LIBRARY_BASE_REPO: The base repo with the C++ implementation, e.g. "NTIA/itm"
+#     LIBRARY_RELEASE_TAG: The Git tag identifying a release. Can be a pre-release.
+#     LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed
+env:
+    LIBRARY_BASE_REPO: NTIA/proplib-template
+    LIBRARY_RELEASE_TAG: v1.0
+    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate/'
+
+jobs:
+  run-all-tests:
+    name: ${{ matrix.platform.os-name }} / Py${{ matrix.py }}
+    runs-on: ${{ matrix.platform.os-runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - os-name: 'Windows (64-bit)'
+            os-runner: 'windows-latest'
+            arch-id: 'x64'
+            release-file-pattern: '*-x64.dll'
+          - os-name: 'Windows (32-bit)'
+            os-runner: 'windows-latest'
+            arch-id: 'x86'
+            release-file-pattern: '*-x86.dll'
+          - os-name: 'macOS (intel/x64)'
+            os-runner: 'macos-13'
+            arch-id: 'x64'
+            release-file-pattern: '*.dylib'
+          - os-name: 'macOS (apple/arm64)'
+            os-runner: 'macos-latest'
+            arch-id: 'arm64'
+            release-file-pattern: '*.dylib'
+          - os-name: 'Linux (Ubuntu)'
+            os-runner: 'ubuntu-latest'
+            arch-id: 'x64'
+            release-file-pattern: '*.so'
+        py:    # Python versions to test on all platforms
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+    steps:
+        - name: Check out repository
+          uses: actions/checkout@v4
+          with:
+            submodules: true
+
+        # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
+        - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
+          id: cache-restore
+          uses: actions/cache@v4
+          with:
+            key: ${{ runner.os }}-${{ matrix.platform.arch-id }}-${{ env.LIBRARY_RELEASE_TAG }}
+            path: ${{ env.LIBRARY_DESTINATION_DIRECTORY}}/${{ matrix.platform.release-file-pattern }}
+
+        # Only the binaries required for the current platform are downloaded. Note that the distributed
+        # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
+        - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} binaries
+          if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+          uses: robinraju/release-downloader@v1
+          with:
+            repository: ${{ env.LIBRARY_BASE_REPO }}
+            tag: ${{ env.LIBRARY_RELEASE_TAG }}
+            fileName: ${{ matrix.platform.release-file-pattern }}
+            tarBall: false
+            zipBall: false
+            out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
+
+        - name: Set up Python ${{ matrix.py }}
+          uses: actions/setup-python@v5
+          with:
+            architecture: ${{ matrix.platform.arch-id }}
+            python-version: ${{ matrix.py }}
+            cache: 'pip'
+
+        - name: Install dependencies for testing
+          run: python -m pip install -e .[tests]
+
+        - name: Run pytest
+          run: pytest --cov-report=term-missing --no-cov-on-fail --cov
