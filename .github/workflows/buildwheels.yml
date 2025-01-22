@@ -1,0 +1,86 @@
+# Action builds a universal (Win32/Win64/macOS-universal/Linux-x64) Python wheel
+# from the source code, using Hatchling, and uploads it as an artifact. This wheel
+# can then be distributed with new releases. The action is triggered by pushes into `main`
+# or pull_requests into `main` or `dev` (for testing). To aid in releases, the workflow is
+# also triggered when new SemVer tags are created. This action handles downloading all
+# shared library files and including them in the resulting wheel.
+name: Build Wheels
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v[0-9]+.*'
+  pull_request:
+    branches:
+      - main
+      - dev
+
+# TODO-TEMPLATE: Populate environment variables below
+#     LIBRARY_BASE_REPO: The base repo with the C++ implementation, e.g. "NTIA/itm"
+#     LIBRARY_RELEASE_TAG: The Git tag identifying a release. Can be a pre-release.
+#     LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed
+env:
+    LIBRARY_BASE_REPO: NTIA/proplib-template
+    LIBRARY_RELEASE_TAG: v1.0
+    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate/'
+
+jobs:
+  build_wheel:
+    name: Build a universal, cross-platform wheel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      # Only the binaries required for the current platform are downloaded. Note that the distributed
+      # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
+      - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} Windows binaries
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: ${{ env.LIBRARY_BASE_REPO }}
+          tag: ${{ env.LIBRARY_RELEASE_TAG }}
+          fileName: '*.dll'
+          tarBall: false
+          zipBall: false
+          out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
+
+      - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} Linux binaries
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: ${{ env.LIBRARY_BASE_REPO }}
+          tag: ${{ env.LIBRARY_RELEASE_TAG }}
+          fileName: '*.so'
+          tarBall: false
+          zipBall: false
+          out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
+
+      - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} macOS binaries
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: ${{ env.LIBRARY_BASE_REPO }}
+          tag: ${{ env.LIBRARY_RELEASE_TAG }}
+          fileName: '*.dylib'
+          tarBall: false
+          zipBall: false
+          out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install build dependencies
+        run: pip install hatchling
+
+      - name: Build wheels
+        run: hatchling build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Universal Wheel (.whl)
+          path: dist/*.whl

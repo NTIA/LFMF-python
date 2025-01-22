@@ -68,6 +68,7 @@ class PropLibCDLL(CDLL):
 
         :param lib_name: The library name, with no extension or path, e.g., "P2108-1.0"
         :raises NotImplementedError: For platforms other than Windows, Linux, or macOS.
+        :raises RuntimeError: On Windows, if unable to determine system architecture.
         :return: The full filename, including path and extension, of the library.
         """
         # Load the compiled library
