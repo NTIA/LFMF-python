@@ -43,6 +43,7 @@ lib.err_check(return_code)
 """
 
 import platform
+import struct
 from ctypes import *
 from pathlib import Path
 
@@ -67,15 +68,24 @@ class PropLibCDLL(CDLL):
 
         :param lib_name: The library name, with no extension or path, e.g., "P2108-1.0"
         :raises NotImplementedError: For platforms other than Windows, Linux, or macOS.
+        :raises RuntimeError: On Windows, if unable to determine system architecture.
         :return: The full filename, including path and extension, of the library.
         """
         # Load the compiled library
         if platform.uname()[0] == "Windows":
-            lib_name += ".dll"
+            arch = struct.calcsize("P") * 8  # 32 or 64
+            if arch == 64:
+                lib_name += "-x64.dll"
+            elif arch == 32:
+                lib_name += "-x86.dll"
+            else:
+                raise RuntimeError(
+                    "Failed to determine system architecture for DLL loading"
+                )
         elif platform.uname()[0] == "Linux":
-            lib_name += ".so"
+            lib_name += "-x86_64.so"
         elif platform.uname()[0] == "Darwin":
-            lib_name += ".dylib"
+            lib_name += "-universal.dylib"
         else:
             raise NotImplementedError("Your OS is not yet supported")
         # Library should be in the same directory as this file

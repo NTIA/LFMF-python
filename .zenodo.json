@@ -1,6 +1,6 @@
 {
     "upload_type": "software",
-    "publication_date": "TODO-TEMPLATE",
+    "publication_date": "2025-1-22",
     "title": "Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python Wrapper",
     "creators": [
         {
@@ -15,7 +15,6 @@
         }
     ],
     "description": "This code repository contains a Python wrapper for the NTIA/ITS implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model.",
-    "access_right": "open",
     "keywords": [
         "propagation",
         "communications",
@@ -36,7 +35,7 @@
         {
             "identifier": "https://ntia.github.io/propagation-library-wiki/models/LFMF/",
             "relation": "isDocumentedBy",
-            "resource_type": "softwaredocumentation"
+            "resource_type": "publication-softwaredocumentation"
         }
     ],
     "version": "1.1.0"
