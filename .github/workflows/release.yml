@@ -1,10 +1,10 @@
 # Action builds a universal (Win32/Win64/macOS-universal/Linux-x64) Python wheel
-# from the source code, using Hatchling, and uploads it as an artifact. This wheel
-# can then be distributed with new releases. The action is triggered by pushes into `main`
+# from the source code, using Hatchling, and uploads it as an artifact. An sdist (.tar.gz) is
+# also uploaded, which includes all platform shared library files. These artifacts should be
+# used when creating new releases on PyPI and GitHub. The action is triggered by pushes into `main`
 # or pull_requests into `main` or `dev` (for testing). To aid in releases, the workflow is
-# also triggered when new SemVer tags are created. This action handles downloading all
-# shared library files and including them in the resulting wheel.
-name: Build Wheels
+# also triggered when new SemVer tags are created.
+name: Build Release Artifacts
 
 on:
   workflow_dispatch:
@@ -82,5 +82,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Universal Wheel (.whl)
-          path: dist/*.whl
+          name: Release Artifacts (sdist and wheel)
+          path: dist/*

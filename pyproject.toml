@@ -64,6 +64,9 @@ path = "src/ITS/Propagation/LFMF/__init__.py"
 packages = ["src/ITS"]
 ignore-vcs = true
 
+[tool.hatch.build.targets.sdist]
+ignore-vcs = true
+
 [tool.cibuildwheel]
 test-command = "pytest ."
 test-requires = "pytest"
