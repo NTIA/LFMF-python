@@ -83,9 +83,9 @@ class PropLibCDLL(CDLL):
                     "Failed to determine system architecture for DLL loading"
                 )
         elif platform.uname()[0] == "Linux":
-            lib_name += ".so"
+            lib_name += "-x86_64.so"
         elif platform.uname()[0] == "Darwin":
-            lib_name += ".dylib"
+            lib_name += "-universal.dylib"
         else:
             raise NotImplementedError("Your OS is not yet supported")
         # Library should be in the same directory as this file
