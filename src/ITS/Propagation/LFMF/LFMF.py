@@ -78,7 +78,7 @@ def LFMF(
             c_double(d__km),
             c_double(epsilon),
             c_double(sigma),
-            c_int(pol),
+            c_int(int(pol)),
             byref(result),
         )
     )
