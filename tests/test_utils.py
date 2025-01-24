@@ -7,7 +7,6 @@ ABSTOL__DB = 0.1  # Absolute tolerance, in dB, to ensure outputs match expected 
 
 # Check if test data directory exists and is not empty
 if not TEST_DATA_DIR.exists() or not any(TEST_DATA_DIR.iterdir()):
-    _test_data_checked = True
     raise RuntimeError(
         f"Test data is not available in {TEST_DATA_DIR}.\n Try running "
         + "`git submodule init` and `git submodule update` to clone the test data submodule."
