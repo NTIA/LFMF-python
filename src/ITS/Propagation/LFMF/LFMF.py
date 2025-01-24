@@ -33,6 +33,11 @@ lib.LFMF.argtypes = (
 )
 
 
+class Polarization(IntEnum):
+    Horizontal = 0
+    Vertical = 1
+
+
 def LFMF(
     h_tx__meter: float,
     h_rx__meter: float,
@@ -42,7 +47,7 @@ def LFMF(
     d__km: float,
     epsilon: float,
     sigma: float,
-    pol: int,
+    pol: Polarization,
 ) -> Result:
     """
     Compute the Low Frequency / Medium Frequency (LF/MF) propagation prediction

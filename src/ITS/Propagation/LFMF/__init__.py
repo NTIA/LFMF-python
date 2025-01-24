@@ -2,6 +2,4 @@
 # and Z is the version of this Python wrapper
 __version__ = "1.1.0"
 
-from .LFMF import *
-
-__all__ = ["LFMF"]
+from .LFMF import LFMF, Polarization, Result
