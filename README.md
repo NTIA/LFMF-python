@@ -8,7 +8,7 @@
 
 [proplib-badge]: https://img.shields.io/badge/PropLib-badge?label=%F0%9F%87%BA%F0%9F%87%B8%20NTIA%2FITS&labelColor=162E51&color=D63E04
 [proplib-link]: https://ntia.github.io/propagation-library-wiki
-[gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/LFMF-python/pytest.yml?branch=main&logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
+[gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/LFMF-python/pytest.yml?logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
 [gh-actions-test-link]: https://github.com/NTIA/LFMF-python/actions/workflows/pytest.yml
 [pypi-release-badge]: https://img.shields.io/pypi/v/proplib-lfmf?logo=pypi&logoColor=ffffff&label=Release&labelColor=162E51&color=D63E04
 [pypi-release-link]: https://pypi.org/project/proplib-lfmf
@@ -17,8 +17,9 @@
 [doi-badge]: https://zenodo.org/badge/896234119.svg
 [doi-link]: https://zenodo.org/badge/latestdoi/896234119
 
-This code repository contains a Python wrapper for the NTIA/ITS implementation of the
-Low Frequency / Medium Frequency (LF/MF) Propagation Model. LF/MF predicts basic transmission
+This repository contains a Python wrapper which wraps the
+[NTIA/ITS Propagation Library](https://ntia.github.io/propagation-library-wiki)
+implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model. LF/MF predicts basic transmission
 loss in the frequency range 0.01 - 30 MHz for propagation paths over a smooth Earth and antenna
 heights less than 50 meters. This Python package wraps the [NTIA/ITS C++ implementation](https://github.com/NTIA/LFMF).
 
