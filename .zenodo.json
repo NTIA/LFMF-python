@@ -1,7 +1,7 @@
 {
     "upload_type": "software",
     "publication_date": "TODO-TEMPLATE",
-    "title": "TODO-TEMPLATE",
+    "title": "TODO-TEMPLATE, Python Wrapper",
     "creators": [
         {
             "name": "TODO-TEMPLATE",
@@ -9,7 +9,7 @@
             "orcid": "TODO-TEMPLATE"
         }
     ],
-    "description": "TODO-TEMPLATE. Make this the same as the abstract.",
+    "description": "This repository contains a Python wrapper for the TODO-TEMPLATE. Make this the same as the abstract. This Python package wraps the NTIA/ITS C++ implementation.",
     "keywords": [
         "TODO-TEMPLATE",
         "TODO-TEMPLATE"

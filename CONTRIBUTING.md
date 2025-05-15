@@ -51,18 +51,16 @@ When complete, features branches should merge into `dev`.
 
 ### Git Submodules
 
-Software in the ITS Propagation Library is implemented primarily in C++. Each piece
-of software has a primary repository which contains the base C++ implementation,
-test data and resources, and common files used by the multi-language wrappers.
-Interfaces for additional programming languages are provided in separate repositories,
-which are linked to the primary repository as [Git submodules](https://gist.github.com/gitaarik/8735255).
-When cloning the primary repository, the submodules are not additionally cloned
-by default. This can be done with the `git submodule init` command. Initializing
-the submodule as part of the parent repository will let you use the build
-configuration from the primary repository to compile the C++ source and place it
-appropriately for use by the wrapper code. If you choose to independently clone
-the wrapper repository, you will likely need to separately download the compiled
-library (for example, a DLL from a GitHub release).
+PropLib C++ repositories make use of Git submodules to reference certain development
+dependencies, e.g. GoogleTest. Depending on the CMake preset or options used, submodules
+may be required to successfully build and/or test the software. When cloning a repository,
+submodules are not additionally cloned by default. Use the following commands to initialize
+and clone any submodules in a repository:
+
+```cmd
+git submodule init
+git submodule update
+```
 
 ### Contributing on GitHub
 
@@ -130,35 +128,27 @@ repository. For details about wrapper repositories, refer to their own README fi
 
 ```bash
 app/                         # The command-line driver which can run the library
-  data/                      # Example input and output files for use with the driver
   include/                   # Headers used by the command-line driver
   src/                       # Source code for the command-line driver
   tests/                     # Header and source files for testing the command-line driver
   CMakeLists.txt             # Configuration for the command-line driver and its tests
-  README.md                  # Usage information for the command-line driver
 docs/
   CMakeLists.txt             # Doxygen configuration
   ...                        # Static files (images, HTML, CS, Markdown) used by Doxygen
 extern/
-  ...                        # External Git submodules/dependencies
+  test-data/                 # Git submodule containing test data files shared with wrappers
+  ...                        # Other external Git submodules/dependencies
 include/
-  <PackageNamespace>/        # Include namespace folder, e.g. "ITS.Propagation.ITM"
-    <HeaderFiles>.h          # Library header files go here, e.g. "ITM.h" and "ErrorCodes.h"
+  <HeaderFile>.h             # Library interface header file goes here, e.g. "ITM.h"
 src/
   <SourceFiles>.cpp          # Source files go here, e.g. "LongleyRice.cpp" and "FreeSpaceLoss.cpp"
   CMakeLists.txt             # Configures cross-platform build
 tests/
-  data/
-    <TestDataFiles>.csv      # Testing data goes here. Does not have to be CSV.
   <TestFiles>.cpp            # Unit tests, usually one test file per source file.
   <TestFiles>.h              # Any headers used by tests go here as well.
   CMakeLists.txt             # CTest+GTest config. Files containing tests must be included here.
-wrap/
-  dotnet/                    # C#/.NET wrapper submodule. Should contain CMakeLists.txt
-  matlab/                    # MATLAB wrapper submodule. Should contain CMakeLists.txt
-  python/                    # Python wrapper submodule. Should contain CMakeLists.txt
 CMakeLists.txt               # Top-level CMakeLists.txt: project metadata and options
-CMakePresets.json            # Presets for CMake, e.g. "release", "debug", etc.
+CMakePresets.json            # Presets for CMake, e.g. "release64", "debug32", etc.
 ...
 ```
 
@@ -179,7 +169,6 @@ The following CMake options are used for top-level project configuration:
 | `RUN_DRIVER_TESTS` | `ON`    | Test the command-line driver executable  |
 | `DOCS_ONLY`        | `OFF`   | Skip all steps _except_ generating the documentation site |
 | `RUN_TESTS`        | `ON`    | Run unit tests for the main library      |
-| `COPY_TO_WRAPPERS` | `ON`    | Copy the compiled shared library into wrapper submodules |
 
 [CMake Presets](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) are
 provided to support common build configurations. These are specified in the
@@ -202,21 +191,21 @@ generating the Doxygen documentation site.
 Below are some examples of how CMake can be called to compile this software.
 
 ```bash
-# Configure and compile in release configuration
-cmake --preset release
-cmake --build --preset release
+# Configure and compile in 64-bit release configuration
+cmake --preset release64
+cmake --build --preset release64
 
-# Use the release configuration but don't build Doxygen docs
-cmake --preset release -DBUILD_DOCS=OFF
-cmake --build --preset release
+# Use the 64-bit release configuration but don't build Doxygen docs
+cmake --preset release64 -DBUILD_DOCS=OFF
+cmake --build --preset release64
 
-# Configure and compile in debug configuration
-cmake --preset debug
-cmake --build --preset debug
+# Configure and compile in 32-bit debug configuration
+cmake --preset debug32
+cmake --build --preset debug32
 
-# Use the release configuration but don't run driver tests
-cmake --preset release -DRUN_DRIVER_TESTS=OFF
-cmake --build --preset release
+# Use the 64-bit release configuration but don't run driver tests
+cmake --preset release64 -DRUN_DRIVER_TESTS=OFF
+cmake --build --preset release64
 ```
 
 ### Supported Platforms and Build Options
@@ -273,8 +262,36 @@ the Doxygen site to GitHub Pages.
 
 ### MATLAB Wrappers
 
-Most code in the MATLAB wrapper is actually written in C. In these files, the same
-documentation style as noted above for C++ should be used.
+MATLAB® wrappers are implemented as toolboxes which interface with the shared library
+compiled from C++ source code. The project structure is informed by the best practices
+provided by MathWorks® in their [`toolboxdesign` repository](https://github.com/mathworks/toolboxdesign).
+Here is an example of how a function may be documented in a MATLAB wrapper. Note the
+documentation with code, where input and output arguments are provided for autocompletion.
+
+```matlab
+function y = DoubleTheInput(x)
+% DoubleTheInput - produces an output which is twice its input.
+%
+% Syntax:
+%   y = DoubleTheInput(x)
+%
+% Input Arguments:
+%   x   (double) - A number which needs doubling
+%
+% Output Arguments:
+%   y   (double) - The result, 2*x
+%
+% Description:
+%   Functions more complex than this one may warrant an additional,
+%   longer description.
+arguments (Input)
+    x double
+end
+arguments (Output)
+    y double
+end
+...
+```
 
 ### Python Wrappers
 
@@ -302,9 +319,9 @@ def double_the_input(x: float) -> float:
   return 2 * x
 ```
 
-### C#/.NET Wrappers
+### .NET Wrappers
 
-In C#/.NET, documentation comments are written in
+PropLib .NET wrappers are written in C# and documentation comments are written in
 [XML format](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/documentation-comments)
 and are used to generate documentation through tools like Visual Studio. Use `<summary>` tags to
 provide brief descriptions of classes, constants, functions, etc. Functions should

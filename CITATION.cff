@@ -24,9 +24,9 @@ authors:
     alias: NTIA/ITS
     email: code@ntia.gov
     website: 'https://its.ntia.gov'
-repository-code: 'https://github.com/NTIA/TODO-TEMPLATE'
+repository-code: 'https://github.com/NTIA/TODO-TEMPLATE-python'
 url: 'https://ntia.github.io/propagation-library-wiki/models/TODO-TEMPLATE/'
 keywords:
   - propagation
   - TODO-TEMPLATE
-version: 1.0.0
+version: TODO-TEMPLATE
