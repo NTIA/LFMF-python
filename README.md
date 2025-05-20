@@ -27,12 +27,12 @@
 -->
 [proplib-badge]: https://img.shields.io/badge/PropLib-badge?label=%F0%9F%87%BA%F0%9F%87%B8%20NTIA%2FITS&labelColor=162E51&color=D63E04
 [proplib-link]: https://ntia.github.io/propagation-library-wiki
-[gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/TODO-TEMPLATE/pytest.yml?branch=main&logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
-[gh-actions-test-link]: https://github.com/NTIA/TODO-TEMPLATE/actions/workflows/pytest.yml
-[pypi-release-badge]: https://img.shields.io/pypi/v/TODO-TEMPLATE?logo=pypi&logoColor=ffffff&label=Release&labelColor=162E51&color=D63E04
-[pypi-release-link]: https://pypi.org/project/TODO-TEMPLATE
-[gh-issues-badge]: https://img.shields.io/github/issues/NTIA/TODO-TEMPLATE?logo=github&label=Issues&labelColor=162E51
-[gh-issues-link]: https://github.com/NTIA/TODO-TEMPLATE/issues
+[gh-actions-test-badge]: https://img.shields.io/github/actions/workflow/status/NTIA/TODO-TEMPLATE-python/pytest.yml?branch=main&logo=pytest&logoColor=ffffff&label=Tests&labelColor=162E51
+[gh-actions-test-link]: https://github.com/NTIA/TODO-TEMPLATE-python/actions/workflows/pytest.yml
+[pypi-release-badge]: https://img.shields.io/pypi/v/proplib-TODO-TEMPLATE?logo=pypi&logoColor=ffffff&label=Release&labelColor=162E51&color=D63E04
+[pypi-release-link]: https://pypi.org/project/proplib-TODO-TEMPLATE
+[gh-issues-badge]: https://img.shields.io/github/issues/NTIA/TODO-TEMPLATE-python?logo=github&label=Issues&labelColor=162E51
+[gh-issues-link]: https://github.com/NTIA/TODO-TEMPLATE-python/issues
 [doi-badge]: https://zenodo.org/badge/TODO-TEMPLATE.svg
 [doi-link]: https://zenodo.org/badge/latestdoi/TODO-TEMPLATE
 
@@ -69,7 +69,7 @@ This software is distributed on [PyPI](#) and is easily installable
 using the following command.
 
 ```cmd
-pip install TODO-TEMPLATE
+pip install proplib-TODO-TEMPLATE
 ```
 
 General information about using this model is available on
@@ -79,7 +79,7 @@ Additionally, Python-specific instructions and code examples are available
 
 If you're a developer and would like to contribute to or extend this repository,
 please review the guide for contributors [here](CONTRIBUTING.md) or open an
-[issue](https://github.com/NTIA/TODO-TEMPLATE/issues) to start a discussion.
+[issue](https://github.com/NTIA/TODO-TEMPLATE-python/issues) to start a discussion.
 
 ## Development ##
 
@@ -105,8 +105,8 @@ library from C++ source code; see relevant build instructions
 
     ```cmd
     # Clone the repository
-    git clone https://github.com/NTIA/TODO-TEMPLATE
-    cd TODO-TEMPLATE
+    git clone https://github.com/NTIA/TODO-TEMPLATE-python
+    cd TODO-TEMPLATE-python
 
     # Initialize Git submodule containing test data
     git submodule init
