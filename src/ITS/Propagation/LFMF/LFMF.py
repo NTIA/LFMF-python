@@ -4,7 +4,7 @@ from enum import IntEnum
 from .proplib_loader import PropLibCDLL
 
 
-class Result(Structure):
+class c_LFMFResult(Structure):
     # C Struct for library outputs
     _fields_ = [
         ("A_btl__db", c_double),
@@ -12,6 +12,14 @@ class Result(Structure):
         ("P_rx__dbm", c_double),
         ("method", c_int),
     ]
+
+
+class LFMFResult(Structure):
+    A_btl__db = None
+    E__dBuVm = None
+    P_rx__dbm = None
+    method = None
+
 
 
 # Load the shared library
@@ -29,7 +37,7 @@ lib.LFMF.argtypes = (
     c_double,
     c_double,
     c_int,
-    POINTER(Result),
+    POINTER(LFMFResult),
 )
 
 
@@ -48,7 +56,7 @@ def LFMF(
     epsilon: float,
     sigma: float,
     pol: Polarization,
-) -> Result:
+) -> LFMFResult:
     """
     Compute the Low Frequency / Medium Frequency (LF/MF) propagation prediction
 
@@ -67,7 +75,7 @@ def LFMF(
 
     :return:  In Result class.
     """
-    result = Result()
+    result = c_LFMFResult()
     lib.err_check(
         lib.LFMF(
             c_double(h_tx__meter),
@@ -82,5 +90,16 @@ def LFMF(
             byref(result),
         )
     )
+
+    return __convertResultStruct(result)
+
+
+def __convertResultStruct(c_result):
+    result = LFMFResult
+    result.A_gas__db = c_result.A_gas__db
+    result.bending__rad = c_result.bending__rad
+    result.a__km = c_result.a__km
+    result.incident__rad = c_result.incident__rad
+    result.delta_L__km = c_result.delta_L__km
 
     return result
