@@ -24,6 +24,24 @@ def read_csv_test_data(filename: str):
             yield tuple(map(float, row[:-2])), int(row[-2]), float(row[-1])
 
 
+"""
+Read CSV into dictionary and convert to data type
+For example: 
+csv_to_test_dict("TestData.csv",
+    {"rtn" : int, "input_1" : float, "input_2" : int, "output" : float}),
+"""
+def csv_to_test_dict(filename, type_dict):
+    with open(TEST_DATA_DIR / filename, mode='r', encoding='utf_8_sig') as infile:
+        reader = csv.reader(infile, skipinitialspace=True)
+        keys = next(reader)
+        for row in reader:
+            test_dict = {}
+            for key, value in zip(keys, row):
+                if key in type_dict:
+                    test_dict[key] = type_dict[key](value)
+            yield test_dict
+
+
 # TODO-TEMPLATE: Delete this dummy test and write your own in another file.
 def test_always_pass():
     return

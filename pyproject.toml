@@ -46,8 +46,8 @@ dev = [
 
 [project.urls]
 "PropLib Wiki" = "https://ntia.github.io/propagation-library-wiki/models/TODO-TEMPLATE/"
-"Python Wrapper Source" = "https://github.com/NTIA/TODO-TEMPLATE"
-"Python Wrapper Bug Tracker" = "https://github.com/NTIA/TODO-TEMPLATE/issues"
+"Python Wrapper Source" = "https://github.com/NTIA/TODO-TEMPLATE-python"
+"Python Wrapper Bug Tracker" = "https://github.com/NTIA/TODO-TEMPLATE-python/issues"
 "C++ Source" = "https://github.com/NTIA/TODO-TEMPLATE"
 "NTIA GitHub" = "https://github.com/NTIA"
 "ITS Website" = "https://its.ntia.gov"
