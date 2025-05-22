@@ -4,22 +4,31 @@ from enum import IntEnum
 from .proplib_loader import PropLibCDLL
 
 
+class Polarization(IntEnum):
+    Horizontal = 0
+    Vertical = 1
+
+
+class SolutionMethod(IntEnum):
+    FlatEarthCurveCorrection = 0
+    ResidueSeries = 1
+
+
 class c_LFMFResult(Structure):
     # C Struct for library outputs
     _fields_ = [
-        ("A_btl__db", c_double),
-        ("E__dBuVm", c_double),
-        ("P_rx__dbm", c_double),
-        ("method", c_int),
+        ("A_btl__db", c_double),    # Basic transmission loss, in dB
+        ("E__dBuVm", c_double),     # Electic field strength, in db(uV/m)
+        ("P_rx__dbm", c_double),    # Received power, in dBm
+        ("method", c_int),          # Solution method used
     ]
 
 
 class LFMFResult(Structure):
-    A_btl__db = None
-    E__dBuVm = None
-    P_rx__dbm = None
-    method = None
-
+    A_btl__db: float = None    # Basic transmission loss, in dB
+    E__dBuVm: float = None     # Electic field strength, in db(uV/m)
+    P_rx__dbm: float = None    # Received power, in dBm
+    method: SolutionMethod = None       # Solution method used
 
 
 # Load the shared library
@@ -37,13 +46,8 @@ lib.LFMF.argtypes = (
     c_double,
     c_double,
     c_int,
-    POINTER(LFMFResult),
+    POINTER(c_LFMFResult),
 )
-
-
-class Polarization(IntEnum):
-    Horizontal = 0
-    Vertical = 1
 
 
 def LFMF(
@@ -86,7 +90,7 @@ def LFMF(
             c_double(d__km),
             c_double(epsilon),
             c_double(sigma),
-            c_int(int(pol)),
+            c_int(pol),
             byref(result),
         )
     )
@@ -96,10 +100,9 @@ def LFMF(
 
 def __convertResultStruct(c_result):
     result = LFMFResult
-    result.A_gas__db = c_result.A_gas__db
-    result.bending__rad = c_result.bending__rad
-    result.a__km = c_result.a__km
-    result.incident__rad = c_result.incident__rad
-    result.delta_L__km = c_result.delta_L__km
+    result.A_btl__db = c_result.A_btl__db
+    result.E__dBuVm = c_result.E__dBuVm
+    result.P_rx__dbm = c_result.P_rx__dbm
+    result.method = SolutionMethod(c_result.method)
 
     return result
