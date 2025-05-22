@@ -22,5 +22,5 @@ def test_lfmf(inputs, rtn, expected):
             with pytest.raises(RuntimeError):
                 LFMF.LFMF(*inputs[:-1], pol)
     else:
-        with pytest.raises(ValueError):
-            LFMF.LFMF(*inputs[:-1], LFMF.Polarization(int(inputs[-1])))
+        with pytest.raises(RuntimeError):
+            LFMF.LFMF(*inputs[:-1], int(inputs[-1]))
