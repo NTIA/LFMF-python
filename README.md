@@ -1,4 +1,4 @@
-# Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python® Wrapper #
+# Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python&reg; Wrapper #
 
 [![NTIA/ITS PropLib][proplib-badge]][proplib-link]
 [![PyPI Release][pypi-release-badge]][pypi-release-link]

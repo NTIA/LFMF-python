@@ -20,3 +20,5 @@ def read_csv_test_data(filename: str):
         for row in reader:
             # yields (*inputs, rtn, *outputs)
             yield tuple(map(float, row[:-5])), int(row[-5]), tuple(map(float, row[-4:]))
+
+Read CSV into dictionary and convert to specified data type
