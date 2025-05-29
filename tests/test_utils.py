@@ -25,7 +25,7 @@ def read_csv_test_data(filename: str):
 
 
 """
-Read CSV into dictionary and convert to data type
+Read CSV into dictionary and convert to specified data type
 For example: 
 csv_to_test_dict("TestData.csv",
     {"rtn" : int, "input_1" : float, "input_2" : int, "output" : float}),
