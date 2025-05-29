@@ -1,4 +1,4 @@
-# NTIA/ITS Propagation Library Template Python Wrapper #
+# NTIA/ITS Propagation Library Template, Python&reg; Wrapper #
 <!-- TODO-TEMPLATE Update software name above -->
 <!-- TODO-TEMPLATE: README BADGES
 

@@ -2,7 +2,7 @@
 
 **Project Name:** NTIA/OSM Research and Development - Propagation Library
 
-**Software Name:** TODO-TEMPLATE, Python Wrapper
+**Software Name:** TODO-TEMPLATE, Python&reg; Wrapper
 
 The project identified above, which is contained within the repository this
 document is stored in, has met the following criteria for public release:
