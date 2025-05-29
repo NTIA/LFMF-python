@@ -2,7 +2,7 @@
 
 **Project Name:** NTIA/OSM Research and Development - Propagation Library
 
-**Software Name:** Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python Wrapper
+**Software Name:** Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python&reg; Wrapper
 
 The project identified above, which is contained within the repository this
 document is stored in, has met the following criteria for public release:
