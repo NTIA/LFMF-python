@@ -10,12 +10,17 @@ from .test_utils import ABSTOL__DB, read_csv_test_data
     read_csv_test_data("LFMF_Examples.csv"),
 )
 def test_lfmf(inputs, rtn, expected):
-    if rtn == 0:
-        result = LFMF.LFMF(*inputs)
-        assert result.A_btl__db == pytest.approx(expected[0], abs=ABSTOL__DB)
-        assert result.E__dBuVm == pytest.approx(expected[1], abs=ABSTOL__DB)
-        assert result.P_rx__dbm == pytest.approx(expected[2], abs=ABSTOL__DB)
-        assert result.method == int(expected[3])
+    if rtn != 40:
+        pol = LFMF.Polarization(int(inputs[-1]))
+        if rtn == 0:
+            result = LFMF.LFMF(*inputs[:-1], pol)
+            assert result.A_btl__db == pytest.approx(expected[0], abs=ABSTOL__DB)
+            assert result.E__dBuVm == pytest.approx(expected[1], abs=ABSTOL__DB)
+            assert result.P_rx__dbm == pytest.approx(expected[2], abs=ABSTOL__DB)
+            assert result.method == LFMF.SolutionMethod(int(expected[3]))
+        else:
+            with pytest.raises(RuntimeError):
+                LFMF.LFMF(*inputs[:-1], pol)
     else:
         with pytest.raises(RuntimeError):
-            LFMF.LFMF(*inputs)
+            LFMF.LFMF(*inputs[:-1], int(inputs[-1]))

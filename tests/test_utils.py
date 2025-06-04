@@ -13,6 +13,7 @@ if not TEST_DATA_DIR.exists() or not any(TEST_DATA_DIR.iterdir()):
     )
 
 
+# Read CSV into dictionary and convert to specified data type
 def read_csv_test_data(filename: str):
     with open(TEST_DATA_DIR / filename) as f:
         reader = csv.reader(f)
