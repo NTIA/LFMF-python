@@ -40,7 +40,7 @@ jobs:
             arch-id: 'x86'
             release-file-pattern: '*-x86.dll'
           - os-name: 'macOS (intel/x64)'
-            os-runner: 'macos-13'
+            os-runner: 'macos-15'
             arch-id: 'x64'
             release-file-pattern: '*.dylib'
           - os-name: 'macOS (apple/arm64)'
@@ -52,20 +52,26 @@ jobs:
             arch-id: 'x64'
             release-file-pattern: '*.so'
         py:    # Python versions to test on all platforms
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
+          - "3.13"
+          - "3.14"
+        exclude:
+          # Exclude python 3.10 on macos-15
+          - platform:
+              os-runner: 'macos-15'
+            py: '3.10'
     steps:
         - name: Check out repository
-          uses: actions/checkout@v4
+          uses: actions/checkout@v6
           with:
             submodules: true
 
         # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
         - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
           id: cache-restore
-          uses: actions/cache@v4
+          uses: actions/cache@v6
           with:
             key: ${{ runner.os }}-${{ matrix.platform.arch-id }}-${{ env.LIBRARY_RELEASE_TAG }}
             path: ${{ env.LIBRARY_DESTINATION_DIRECTORY}}/${{ matrix.platform.release-file-pattern }}
@@ -84,7 +90,7 @@ jobs:
             out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
         - name: Set up Python ${{ matrix.py }}
-          uses: actions/setup-python@v5
+          uses: actions/setup-python@v6
           with:
             architecture: ${{ matrix.platform.arch-id }}
             python-version: ${{ matrix.py }}
