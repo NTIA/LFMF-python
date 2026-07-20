@@ -1,4 +1,4 @@
-# Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python® Wrapper #
+# Low Frequency / Medium Frequency (LF/MF) Propagation Model, Python&reg; Wrapper #
 
 [![NTIA/ITS PropLib][proplib-badge]][proplib-link]
 [![PyPI Release][pypi-release-badge]][pypi-release-link]
@@ -77,6 +77,8 @@ library from C++ source code; see relevant build instructions
 1. Download the shared library (`.dll`, `.so`, or `.dylib`) from a
 [GitHub Release](https://github.com/NTIA/LFMF/releases). Then place the
 downloaded file in `src/ITS/Propagation/LFMF/` (alongside `__init__.py`).
+
+1. Make sure pip, hatchling and pytest are installed in your current environment.
 
 1. Install the local package and development dependencies into your current environment:
 

@@ -14,7 +14,7 @@
             "orcid": "0000-0001-8437-6504"
         }
     ],
-    "description": "This code repository contains a Python wrapper for the NTIA/ITS implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model.",
+    "description": "This code repository contains a Python wrapper for the NTIA/ITS implementation of the Low Frequency / Medium Frequency (LF/MF) Propagation Model. This Python package wraps the NTIA/ITS C++ implementation.",
     "keywords": [
         "propagation",
         "communications",
