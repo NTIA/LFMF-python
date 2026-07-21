@@ -32,7 +32,7 @@ class LFMFResult(Structure):
 
 
 # Load the shared library
-lib = PropLibCDLL("LFMF-1.1")
+lib = PropLibCDLL("LFMF-1.2")
 
 # Define function prototypes
 lib.LFMF.restype = c_int
