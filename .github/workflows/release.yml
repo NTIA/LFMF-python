@@ -40,7 +40,7 @@ jobs:
       # Only the binaries required for the current platform are downloaded. Note that the distributed
       # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
       - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} Windows binaries
-        uses: robinraju/release-downloader@v1
+        uses: robinraju/release-downloader@v1.13
         with:
           repository: ${{ env.LIBRARY_BASE_REPO }}
           tag: ${{ env.LIBRARY_RELEASE_TAG }}
@@ -50,7 +50,7 @@ jobs:
           out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
       - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} Linux binaries
-        uses: robinraju/release-downloader@v1
+        uses: robinraju/release-downloader@v1.13
         with:
           repository: ${{ env.LIBRARY_BASE_REPO }}
           tag: ${{ env.LIBRARY_RELEASE_TAG }}
@@ -60,7 +60,7 @@ jobs:
           out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
       - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} macOS binaries
-        uses: robinraju/release-downloader@v1
+        uses: robinraju/release-downloader@v1.13
         with:
           repository: ${{ env.LIBRARY_BASE_REPO }}
           tag: ${{ env.LIBRARY_RELEASE_TAG }}
