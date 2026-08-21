@@ -1,22 +1,26 @@
 # Action builds a universal (Win32/Win64/macOS-universal/Linux-x64) Python wheel
 # from the source code, using Hatchling, and uploads it as an artifact. An sdist (.tar.gz) is
 # also uploaded, which includes all platform shared library files. These artifacts should be
-# used when creating new releases on PyPI and GitHub. The action is triggered by pushes into `main`
-# or pull_requests into `main` or `dev` (for testing). To aid in releases, the workflow is
-# also triggered when new SemVer tags are created.
+# used when creating new releases on PyPI and GitHub. The action is triggered when a new SemVer
+# tag (v*) is pushed, and can also be run manually via workflow_dispatch.
 name: Build Release Artifacts
 
 on:
-  workflow_dispatch:
+  ## This release build is triggered when a SemVer tag (v*) is pushed, and can
+  ## also be run manually via workflow_dispatch. Branch/PR auto-triggers are
+  ## intentionally not used here.
   push:
-    branches:
-      - main
     tags:
       - 'v[0-9]+.*'
-  pull_request:
-    branches:
-      - main
-      - dev
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+# Least-privilege default token permissions
+permissions:
+  contents: read
 
 # TODO-TEMPLATE: Populate environment variables below
 #     LIBRARY_BASE_REPO: The base repo with the C++ implementation, e.g. "NTIA/itm"
@@ -30,10 +34,10 @@ env:
 jobs:
   build_wheel:
     name: Build a universal, cross-platform wheel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04    # current stable Ubuntu (Aug 2026)
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           submodules: true
 
@@ -70,7 +74,7 @@ jobs:
           out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 
