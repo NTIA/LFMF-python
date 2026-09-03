@@ -27,9 +27,9 @@ permissions:
 #   LIBRARY_RELEASE_TAG: The Git tag identifying the binary release to test. Can be a pre-release.
 #   LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed.
 env:
-    LIBRARY_BASE_REPO: NTIA/proplib-template
-    LIBRARY_RELEASE_TAG: v1.2
-    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate'
+  LIBRARY_BASE_REPO: NTIA/proplib-template
+  LIBRARY_RELEASE_TAG: v1.2
+  LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate'
 
 jobs:
   build_wheel:

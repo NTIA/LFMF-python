@@ -4,7 +4,6 @@ on:
   ## Auto-triggers are disabled by default. Uncomment the
   ## push/pull_request blocks below to enable CI on branches/PRs. Until then,
   ## the workflow runs only via manual dispatch (Actions tab → Run workflow).
-  workflow_dispatch:
   #push:
   #  branches:
   #    - main
@@ -21,6 +20,7 @@ on:
   #    - 'tests/**'
   #    - 'pyproject.toml'
   #    - '.github/workflows/pytest.yml'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -36,9 +36,9 @@ permissions:
 #   LIBRARY_RELEASE_TAG: The Git tag identifying the binary release to test. Can be a pre-release.
 #   LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed.
 env:
-    LIBRARY_BASE_REPO: NTIA/proplib-template
-    LIBRARY_RELEASE_TAG: v1.2
-    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate'
+  LIBRARY_BASE_REPO: NTIA/proplib-template
+  LIBRARY_RELEASE_TAG: v1.2
+  LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/PropLibTemplate'
 
 jobs:
   should-run:
@@ -129,45 +129,45 @@ jobs:
               release-file-pattern: '*.so'
             py: "3.13"
     steps:
-        - name: Check out repository
-          uses: actions/checkout@v7
-          #with:
-            ## TODO: needs to remove token if NTIA submodule repos are public
-            #token: ${{ secrets.READONLY_TOKEN }}    # Used to checkout non-public repo submodule
-            #submodules: true
+      - name: Check out repository
+        uses: actions/checkout@v7
+        #with:
+          ## TODO: needs to remove token if NTIA submodule repos are public
+          #token: ${{ secrets.READONLY_TOKEN }}    # Used to checkout non-public repo submodule
+          #submodules: true
 
-        # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
-        - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
-          id: cache-restore
-          uses: actions/cache@v6
-          with:
-            key: ${{ runner.os }}-${{ matrix.platform.arch-id }}-${{ env.LIBRARY_RELEASE_TAG }}
-            path: ${{ env.LIBRARY_DESTINATION_DIRECTORY}}/${{ matrix.platform.release-file-pattern }}
+      # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
+      - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
+        id: cache-restore
+        uses: actions/cache@v6
+        with:
+          key: ${{ runner.os }}-${{ matrix.platform.arch-id }}-${{ env.LIBRARY_RELEASE_TAG }}
+          path: ${{ env.LIBRARY_DESTINATION_DIRECTORY}}/${{ matrix.platform.release-file-pattern }}
 
-        # Only the binaries required for the current platform are downloaded. Note that the distributed
-        # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
-        - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} binaries
-          if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-          uses: robinraju/release-downloader@v1.13
-          with:
-            # TODO: needs to remove token once C++ library is released to the public
-            token: ${{ secrets.READONLY_TOKEN }}    # Used to download non-public repo release
-            repository: ${{ env.LIBRARY_BASE_REPO }}
-            tag: ${{ env.LIBRARY_RELEASE_TAG }}
-            fileName: ${{ matrix.platform.release-file-pattern }}
-            tarBall: false
-            zipBall: false
-            out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
+      # Only the binaries required for the current platform are downloaded. Note that the distributed
+      # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
+      - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} binaries
+        if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+        uses: robinraju/release-downloader@v1.13
+        with:
+          # TODO: needs to remove token once C++ library is released to the public
+          token: ${{ secrets.READONLY_TOKEN }}    # Used to download non-public repo release
+          repository: ${{ env.LIBRARY_BASE_REPO }}
+          tag: ${{ env.LIBRARY_RELEASE_TAG }}
+          fileName: ${{ matrix.platform.release-file-pattern }}
+          tarBall: false
+          zipBall: false
+          out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
-        - name: Set up Python ${{ matrix.py }}
-          uses: actions/setup-python@v6
-          with:
-            architecture: ${{ matrix.platform.arch-id }}
-            python-version: ${{ matrix.py }}
-            cache: 'pip'
+      - name: Set up Python ${{ matrix.py }}
+        uses: actions/setup-python@v6
+        with:
+          architecture: ${{ matrix.platform.arch-id }}
+          python-version: ${{ matrix.py }}
+          cache: 'pip'
 
-        - name: Install dependencies for testing
-          run: python -m pip install -e .[tests]
+      - name: Install dependencies for testing
+        run: python -m pip install -e .[tests]
 
-        - name: Run pytest
-          run: pytest --cov-report=term-missing --no-cov-on-fail --cov
+      - name: Run pytest
+        run: pytest --cov-report=term-missing --no-cov-on-fail --cov
