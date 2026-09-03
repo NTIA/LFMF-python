@@ -6,5 +6,7 @@ from .LFMF import (
     LFMF,
     Polarization,
     SolutionMethod,
-    LFMFResult
+    LFMFResult,
+    GetLibraryName,
+    GetLibraryVersion,
 )
