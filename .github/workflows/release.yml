@@ -1,42 +1,49 @@
 # Action builds a universal (Win32/Win64/macOS-universal/Linux-x64) Python wheel
 # from the source code, using Hatchling, and uploads it as an artifact. An sdist (.tar.gz) is
 # also uploaded, which includes all platform shared library files. These artifacts should be
-# used when creating new releases on PyPI and GitHub. The action is triggered by pushes into `main`
-# or pull_requests into `main` or `dev` (for testing). To aid in releases, the workflow is
-# also triggered when new SemVer tags are created.
+# used when creating new releases on PyPI and GitHub. The action is triggered when a new SemVer
+# tag (v*) is pushed, and can also be run manually via workflow_dispatch.
 name: Build Release Artifacts
 
 on:
-  workflow_dispatch:
+  ## This release build is triggered when a SemVer tag (v*) is pushed, and can
+  ## also be run manually via workflow_dispatch. Branch/PR auto-triggers are
+  ## intentionally not used here.
   push:
-    branches:
-      - main
     tags:
       - 'v[0-9]+.*'
-  pull_request:
-    branches:
-      - main
-      - dev
+  workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+# Least-privilege default token permissions
+permissions:
+  contents: read
+
+#   LIBRARY_BASE_REPO: The base repo with the C++ implementation, e.g. "NTIA/itm".
+#   LIBRARY_RELEASE_TAG: The Git tag identifying the binary release to test. Can be a pre-release.
+#   LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed.
 env:
-    LIBRARY_BASE_REPO: NTIA/LFMF
-    LIBRARY_RELEASE_TAG: v1.1
-    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/Propagation/LFMF/'
+  LIBRARY_BASE_REPO: NTIA/LFMF
+  LIBRARY_RELEASE_TAG: v1.2-rc.2
+  LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/Propagation/LFMF'
 
 jobs:
   build_wheel:
     name: Build a universal, cross-platform wheel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04    # current stable Ubuntu (Aug 2026)
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           submodules: true
 
       # Only the binaries required for the current platform are downloaded. Note that the distributed
       # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
       - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} Windows binaries
-        uses: robinraju/release-downloader@v1
+        uses: robinraju/release-downloader@v1.13
         with:
           repository: ${{ env.LIBRARY_BASE_REPO }}
           tag: ${{ env.LIBRARY_RELEASE_TAG }}
@@ -46,7 +53,7 @@ jobs:
           out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
       - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} Linux binaries
-        uses: robinraju/release-downloader@v1
+        uses: robinraju/release-downloader@v1.13
         with:
           repository: ${{ env.LIBRARY_BASE_REPO }}
           tag: ${{ env.LIBRARY_RELEASE_TAG }}
@@ -56,7 +63,7 @@ jobs:
           out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
       - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} macOS binaries
-        uses: robinraju/release-downloader@v1
+        uses: robinraju/release-downloader@v1.13
         with:
           repository: ${{ env.LIBRARY_BASE_REPO }}
           tag: ${{ env.LIBRARY_RELEASE_TAG }}
@@ -66,7 +73,7 @@ jobs:
           out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 

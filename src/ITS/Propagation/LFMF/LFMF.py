@@ -32,7 +32,7 @@ class LFMFResult(Structure):
 
 
 # Load the shared library
-lib = PropLibCDLL("LFMF-1.1")
+lib = PropLibCDLL("LFMF-1.2")
 
 # Define function prototypes
 lib.LFMF.restype = c_int
@@ -106,3 +106,21 @@ def __convertResultStruct(c_result):
     result.method = SolutionMethod(c_result.method)
 
     return result
+
+
+def GetLibraryName() -> str:
+    return __read_char_array(lib.GetLibraryNameCharArray())
+
+
+def GetLibraryVersion() -> str:
+    return __read_char_array(lib.GetLibraryVersionCharArray())
+
+
+def __read_char_array(msg) -> str:
+    try:
+        msg_bytes = cast(msg, c_char_p).value
+        if msg_bytes is None:
+            raise RuntimeError("The TODO-TEMPLATE library returned an empty text response.")
+        return msg_bytes.decode("utf-8")
+    finally:
+        lib.FreeCharArray(msg)

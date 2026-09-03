@@ -1,99 +1,168 @@
 name: Test with pytest
 
 on:
+  ## Auto-triggers are disabled by default. Uncomment the
+  ## push/pull_request blocks below to enable CI on branches/PRs. Until then,
+  ## the workflow runs only via manual dispatch (Actions tab → Run workflow).
+  #push:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - 'src/**'
+  #    - 'tests/**'
+  #    - 'pyproject.toml'
+  #    - '.github/workflows/pytest.yml'
+  #pull_request:
+  #  branches:
+  #    - main
+  #  paths:
+  #    - 'src/**'
+  #    - 'tests/**'
+  #    - 'pyproject.toml'
+  #    - '.github/workflows/pytest.yml'
   workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-      - dev
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+# Least-privilege default token permissions
+permissions:
+  contents: read
+  pull-requests: read
+
+#   LIBRARY_BASE_REPO: The base repo with the C++ implementation, e.g. "NTIA/itm".
+#   LIBRARY_RELEASE_TAG: The Git tag identifying the binary release to test. Can be a pre-release.
+#   LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed.
 env:
-    LIBRARY_BASE_REPO: NTIA/LFMF
-    LIBRARY_RELEASE_TAG: v1.1
-    LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/Propagation/LFMF'
+  LIBRARY_BASE_REPO: NTIA/LFMF
+  LIBRARY_RELEASE_TAG: v1.2-rc.2
+  LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/Propagation/LFMF'
 
 jobs:
+  should-run:
+    runs-on: ubuntu-24.04    # current stable Ubuntu (Aug 2026)
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+    steps:
+      - name: Skip duplicate runs for merged PRs
+        id: decide
+        uses: actions/github-script@v9
+        with:
+          script: |
+            if (context.eventName !== 'push') {
+              core.setOutput('should_run', 'true');
+              return;
+            }
+
+            const { data: pullRequests } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha
+            });
+
+            const hasMainPullRequest = pullRequests.some((pullRequest) => pullRequest.base.ref === 'main');
+            core.setOutput('should_run', hasMainPullRequest ? 'false' : 'true');
+
   run-all-tests:
+    if: ${{ needs.should-run.outputs.should_run == 'true' }}
+    needs: should-run
     name: ${{ matrix.platform.os-name }} / Py${{ matrix.py }}
     runs-on: ${{ matrix.platform.os-runner }}
     strategy:
       fail-fast: false
       matrix:
+        # As of Aug 2026, current stable runner images are windows-2025, ubuntu-24.04,
+        # and macos-15 (arm64) / macos-15-intel.
         platform:
           - os-name: 'Windows (64-bit)'
-            os-runner: 'windows-latest'
+            os-runner: 'windows-2025'    # current stable, Aug 2026
             arch-id: 'x64'
             release-file-pattern: '*-x64.dll'
           - os-name: 'Windows (32-bit)'
-            os-runner: 'windows-latest'
+            os-runner: 'windows-2025'    # current stable, Aug 2026
             arch-id: 'x86'
             release-file-pattern: '*-x86.dll'
           - os-name: 'macOS (intel/x64)'
-            os-runner: 'macos-15'
+            os-runner: 'macos-15-intel'  # Explicit Intel runner required for x64 Python setup
             arch-id: 'x64'
             release-file-pattern: '*.dylib'
           - os-name: 'macOS (apple/arm64)'
-            os-runner: 'macos-latest'
+            os-runner: 'macos-15'        # Apple silicon (arm64), current stable (Aug 2026)
             arch-id: 'arm64'
             release-file-pattern: '*.dylib'
           - os-name: 'Linux (Ubuntu)'
-            os-runner: 'ubuntu-latest'
+            os-runner: 'ubuntu-24.04'    # current stable, Aug 2026
             arch-id: 'x64'
             release-file-pattern: '*.so'
-        py:    # Python versions to test on all platforms
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
+        # Non-Linux runners test only the supported bounds (oldest + newest Python)
+        # to save runner minutes; Linux covers the full supported range. The bounds
+        # match pyproject `requires-python = ">=3.9"` (newest = 3.14).
+        py:
+          - "3.9"
           - "3.14"
-        exclude:
-          # Exclude python 3.10 on macos-15
+        include:
+          # Full Python-version coverage on Linux only.
           - platform:
-              os-runner: 'macos-15'
-            py: '3.10'
+              os-name: 'Linux (Ubuntu)'
+              os-runner: 'ubuntu-24.04'
+              arch-id: 'x64'
+              release-file-pattern: '*.so'
+            py: "3.10"
+          - platform:
+              os-name: 'Linux (Ubuntu)'
+              os-runner: 'ubuntu-24.04'
+              arch-id: 'x64'
+              release-file-pattern: '*.so'
+            py: "3.11"
+          - platform:
+              os-name: 'Linux (Ubuntu)'
+              os-runner: 'ubuntu-24.04'
+              arch-id: 'x64'
+              release-file-pattern: '*.so'
+            py: "3.12"
+          - platform:
+              os-name: 'Linux (Ubuntu)'
+              os-runner: 'ubuntu-24.04'
+              arch-id: 'x64'
+              release-file-pattern: '*.so'
+            py: "3.13"
     steps:
-        - name: Check out repository
-          uses: actions/checkout@v6
-          with:
-            submodules: true
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          submodules: true
 
-        # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
-        - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
-          id: cache-restore
-          uses: actions/cache@v6
-          with:
-            key: ${{ runner.os }}-${{ matrix.platform.arch-id }}-${{ env.LIBRARY_RELEASE_TAG }}
-            path: ${{ env.LIBRARY_DESTINATION_DIRECTORY}}/${{ matrix.platform.release-file-pattern }}
+      # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
+      - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
+        id: cache-restore
+        uses: actions/cache@v6
+        with:
+          key: ${{ runner.os }}-${{ matrix.platform.arch-id }}-${{ env.LIBRARY_RELEASE_TAG }}
+          path: ${{ env.LIBRARY_DESTINATION_DIRECTORY}}/${{ matrix.platform.release-file-pattern }}
 
-        # Only the binaries required for the current platform are downloaded. Note that the distributed
-        # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
-        - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} binaries
-          if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
-          uses: robinraju/release-downloader@v1
-          with:
-            repository: ${{ env.LIBRARY_BASE_REPO }}
-            tag: ${{ env.LIBRARY_RELEASE_TAG }}
-            fileName: ${{ matrix.platform.release-file-pattern }}
-            tarBall: false
-            zipBall: false
-            out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
+      # Only the binaries required for the current platform are downloaded. Note that the distributed
+      # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.
+      - name: Download required ${{ env.LIBRARY_RELEASE_TAG }} binaries
+        if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
+        uses: robinraju/release-downloader@v1.13
+        with:
+          repository: ${{ env.LIBRARY_BASE_REPO }}
+          tag: ${{ env.LIBRARY_RELEASE_TAG }}
+          fileName: ${{ matrix.platform.release-file-pattern }}
+          tarBall: false
+          zipBall: false
+          out-file-path: ${{ env.LIBRARY_DESTINATION_DIRECTORY }}
 
-        - name: Set up Python ${{ matrix.py }}
-          uses: actions/setup-python@v6
-          with:
-            architecture: ${{ matrix.platform.arch-id }}
-            python-version: ${{ matrix.py }}
-            cache: 'pip'
+      - name: Set up Python ${{ matrix.py }}
+        uses: actions/setup-python@v6
+        with:
+          architecture: ${{ matrix.platform.arch-id }}
+          python-version: ${{ matrix.py }}
+          cache: 'pip'
 
-        - name: Install dependencies for testing
-          run: python -m pip install -e .[tests]
+      - name: Install dependencies for testing
+        run: python -m pip install -e .[tests]
 
-        - name: Run pytest
-          run: pytest --cov-report=term-missing --no-cov-on-fail --cov
+      - name: Run pytest
+        run: pytest --cov-report=term-missing --no-cov-on-fail --cov
