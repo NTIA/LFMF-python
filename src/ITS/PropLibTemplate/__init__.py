@@ -3,6 +3,7 @@
 __version__ = "1.0.0"
 
 # TODO-TEMPLATE import the functions and objects for the package to expose
-# from .proplib_template import (
-
-# )
+from .proplib_template import (
+    GetLibraryName,
+    GetLibraryVersion,
+)

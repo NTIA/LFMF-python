@@ -44,19 +44,30 @@ lib.err_check(return_code)
 
 import platform
 import struct
-from ctypes import *
+from ctypes import CDLL, POINTER, c_char_p, c_int, cast
 from pathlib import Path
 
 
 class PropLibCDLL(CDLL):
-    def __init__(self, name):
+    """Load a shared library and expose common error."""
+    def __init__(self, name: str) -> None:
         full_name = self.get_lib_name(name)
+        if not Path(full_name).is_file():
+            raise FileNotFoundError(
+                f"Shared library '{name}' was not found at '{full_name}'."
+            )
         super().__init__(full_name)
+
         # Define expected function prototypes
         self.GetReturnStatusCharArray.restype = POINTER(c_char_p)
         self.GetReturnStatusCharArray.argtypes = (c_int,)
-        self.FreeReturnStatusCharArray.restype = None
-        self.FreeReturnStatusCharArray.argtypes = (POINTER(c_char_p),)
+        self.FreeCharArray.restype = None
+        self.FreeCharArray.argtypes = (POINTER(c_char_p),)
+        self.GetLibraryNameCharArray.restype = POINTER(c_char_p)
+        self.GetLibraryNameCharArray.argtypes = None
+        self.GetLibraryVersionCharArray.restype = POINTER(c_char_p)
+        self.GetLibraryVersionCharArray.argtypes = None
+
 
     @staticmethod
     def get_lib_name(lib_name: str) -> str:
@@ -72,24 +83,24 @@ class PropLibCDLL(CDLL):
         :return: The full filename, including path and extension, of the library.
         """
         # Load the compiled library
-        if platform.uname()[0] == "Windows":
+        system = platform.system()
+        if system == "Windows":
             arch = struct.calcsize("P") * 8  # 32 or 64
             if arch == 64:
-                lib_name += "-x64.dll"
+                suffix = "-x64.dll"
             elif arch == 32:
-                lib_name += "-x86.dll"
+                suffix = "-x86.dll"
             else:
                 raise RuntimeError(
                     "Failed to determine system architecture for DLL loading"
                 )
-        elif platform.uname()[0] == "Linux":
-            lib_name += "-x86_64.so"
-        elif platform.uname()[0] == "Darwin":
-            lib_name += "-universal.dylib"
+        elif system == "Linux":
+            suffix = "-x86_64.so"
+        elif system == "Darwin":
+            suffix = "-universal.dylib"
         else:
-            raise NotImplementedError("Your OS is not yet supported")
-        # Library should be in the same directory as this file
-        lib_path = Path(__file__).parent / lib_name
+            raise NotImplementedError(f"Unsupported operating system: {system}")
+        lib_path = Path(__file__).parent / f"{lib_name}{suffix}"
         return str(lib_path.resolve())
 
     def err_check(self, rtn_code: int) -> None:
@@ -105,8 +116,15 @@ class PropLibCDLL(CDLL):
         """
         if rtn_code == 0:
             return
-        else:
-            msg = self.GetReturnStatusCharArray(c_int(rtn_code))
-            msg_str = cast(msg, c_char_p).value.decode("utf-8")
-            self.FreeReturnStatusCharArray(msg)
-            raise RuntimeError(msg_str)
+
+        msg = self.GetReturnStatusCharArray(c_int(rtn_code))
+        try:
+            msg_bytes = cast(msg, c_char_p).value
+            if msg_bytes is None:
+                raise RuntimeError(
+                    f"Library call failed with code {rtn_code}, but no error text was returned."
+                )
+            msg_str = msg_bytes.decode("utf-8")
+        finally:
+            self.FreeCharArray(msg)
+        raise RuntimeError(msg_str)
