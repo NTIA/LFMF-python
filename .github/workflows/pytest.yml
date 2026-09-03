@@ -150,6 +150,8 @@ jobs:
           if: ${{ steps.cache-restore.outputs.cache-hit != 'true' }}
           uses: robinraju/release-downloader@v1.13
           with:
+            # TODO: needs to remove token once C++ library is released to the public
+            token: ${{ secrets.READONLY_TOKEN }}    # Used to download non-public repo release
             repository: ${{ env.LIBRARY_BASE_REPO }}
             tag: ${{ env.LIBRARY_RELEASE_TAG }}
             fileName: ${{ matrix.platform.release-file-pattern }}
