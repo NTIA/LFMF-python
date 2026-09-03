@@ -1,6 +1,6 @@
 import csv
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 from ITS import PropLibTemplate
 
@@ -18,7 +18,7 @@ if not TEST_DATA_DIR.exists() or not any(TEST_DATA_DIR.iterdir()):
 
 
 # TODO-TEMPLATE: Update CSV reader based on test data CSV structure
-def _resolve_test_data_file(filename: str, data_dir: Path | None = None) -> Path:
+def _resolve_test_data_file(filename: str, data_dir: Optional[Path] = None) -> Path:
     """Resolve a CSV test-data file and raise a clear error when it is missing."""
 
     base_dir = data_dir or TEST_DATA_DIR
@@ -31,7 +31,7 @@ def _resolve_test_data_file(filename: str, data_dir: Path | None = None) -> Path
     return file_path
 
 
-def read_csv_test_data(filename: str, data_dir: Path | None = None):
+def read_csv_test_data(filename: str, data_dir: Optional[Path] = None):
     """Yield ``(*inputs, rtn, output)`` tuples from a simple numeric CSV file."""
 
     file_path = _resolve_test_data_file(filename, data_dir)
@@ -52,7 +52,7 @@ csv_to_test_dict("TestData.csv",
 def csv_to_test_dict(
     filename: str,
     type_dict: dict[str, type[Any]],
-    data_dir: Path | None = None,
+    data_dir: Optional[Path] = None,
 ):
     """Yield dictionaries converted from CSV rows using the supplied type map."""
 
