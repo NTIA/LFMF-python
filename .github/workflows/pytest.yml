@@ -85,7 +85,7 @@ jobs:
             arch-id: 'x86'
             release-file-pattern: '*-x86.dll'
           - os-name: 'macOS (intel/x64)'
-            os-runner: 'macos-15'        # Intel via macos-15 x64 image, current stable (Aug 2026)
+            os-runner: 'macos-15-intel'  # Explicit Intel runner required for x64 Python setup
             arch-id: 'x64'
             release-file-pattern: '*.dylib'
           - os-name: 'macOS (apple/arm64)'
