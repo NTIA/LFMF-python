@@ -38,8 +38,6 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-        with:
-          submodules: true
 
       # Only the binaries required for the current platform are downloaded. Note that the distributed
       # wheel for proplib python packages includes all binaries, so that the wheel is inherently cross-platform.

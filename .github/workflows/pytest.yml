@@ -131,8 +131,10 @@ jobs:
     steps:
         - name: Check out repository
           uses: actions/checkout@v7
-          with:
-            submodules: true
+          #with:
+            ## TODO: needs to remove token if NTIA submodule repos are public
+            #token: ${{ secrets.READONLY_TOKEN }}    # Used to checkout non-public repo submodule
+            #submodules: true
 
         # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
         - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
