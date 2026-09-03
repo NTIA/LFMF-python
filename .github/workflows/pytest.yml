@@ -130,6 +130,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+        with:
+          submodules: true
 
       # Cache key is unique to the combination of runner OS + architecture (matrix.arch-id) + release tag
       - name: Restore ${{ env.LIBRARY_RELEASE_TAG }} binaries from cache if available
