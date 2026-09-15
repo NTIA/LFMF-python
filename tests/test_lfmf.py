@@ -1,7 +1,6 @@
 import pytest
 
 from ITS.Propagation import LFMF
-
 from .test_utils import ABSTOL__DB, read_csv_test_data
 
 
