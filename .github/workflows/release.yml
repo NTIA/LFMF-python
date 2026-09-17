@@ -27,7 +27,7 @@ permissions:
 #   LIBRARY_DESTINATION_DIRECTORY: Path in this repo where shared library files should be placed.
 env:
   LIBRARY_BASE_REPO: NTIA/LFMF
-  LIBRARY_RELEASE_TAG: v1.1
+  LIBRARY_RELEASE_TAG: v1.2-rc.2
   LIBRARY_DESTINATION_DIRECTORY: 'src/ITS/Propagation/LFMF'
 
 jobs:

@@ -2,6 +2,8 @@ import csv
 from pathlib import Path
 from typing import Optional
 
+from ITS.Propagation import LFMF
+
 # Test data is expected to exist in tests/data
 TEST_DATA_DIR = Path(__file__).parent / "data"
 ABSTOL__DB = 0.1  # Absolute tolerance, in dB, to ensure outputs match expected value
@@ -38,3 +40,13 @@ def read_csv_test_data(filename: str, data_dir: Optional[Path] = None):
         for row in reader:
             # yields (*inputs, rtn, *outputs)
             yield tuple(map(float, row[:-5])), int(row[-5]), tuple(map(float, row[-4:]))
+
+
+def test_LibraryName():
+    name = LFMF.GetLibraryName()
+    assert name == 'LFMF'
+
+
+def test_LibraryVersion():
+    version = LFMF.GetLibraryVersion()
+    assert version == '1.2'

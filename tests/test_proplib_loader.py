@@ -64,7 +64,7 @@ def test_err_check_raises_library_message() -> None:
             return cast(c_char_p(error_message), POINTER(c_char_p))
 
         @staticmethod
-        def FreeReturnStatusCharArray(message) -> None:
+        def FreeCharArray(message) -> None:
             freed_messages.append(message)
 
     with pytest.raises(RuntimeError, match="example failure"):
@@ -82,7 +82,7 @@ def test_err_check_handles_missing_error_text() -> None:
             return cast(c_char_p(None), POINTER(c_char_p))
 
         @staticmethod
-        def FreeReturnStatusCharArray(message) -> None:
+        def FreeCharArray(message) -> None:
             freed_messages.append(message)
 
     with pytest.raises(RuntimeError, match="no error text was returned"):

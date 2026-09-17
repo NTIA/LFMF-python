@@ -61,8 +61,12 @@ class PropLibCDLL(CDLL):
         # Define expected function prototypes
         self.GetReturnStatusCharArray.restype = POINTER(c_char_p)
         self.GetReturnStatusCharArray.argtypes = (c_int,)
-        self.FreeReturnStatusCharArray.restype = None
-        self.FreeReturnStatusCharArray.argtypes = (POINTER(c_char_p),)
+        self.FreeCharArray.restype = None
+        self.FreeCharArray.argtypes = (POINTER(c_char_p),)
+        self.GetLibraryNameCharArray.restype = POINTER(c_char_p)
+        self.GetLibraryNameCharArray.argtypes = None
+        self.GetLibraryVersionCharArray.restype = POINTER(c_char_p)
+        self.GetLibraryVersionCharArray.argtypes = None
 
 
     @staticmethod
@@ -122,5 +126,5 @@ class PropLibCDLL(CDLL):
                 )
             msg_str = msg_bytes.decode("utf-8")
         finally:
-            self.FreeReturnStatusCharArray(msg)
+            self.FreeCharArray(msg)
         raise RuntimeError(msg_str)
