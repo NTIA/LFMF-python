@@ -36,6 +36,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 
 [project.optional-dependencies]
@@ -46,7 +47,8 @@ tests = [
 dev = [
     "hatchling>=1.25.0,<2.0",
     "pre-commit>=4.0.1,<5.0",
-    "proplib-lfmf[tests]",
+    "pytest>=8.2.0,<9.0",
+    "pytest-cov>=6.0.0,<7.0",
 ]
 
 [project.urls]
@@ -68,5 +70,9 @@ ignore-vcs = true
 ignore-vcs = true
 
 [tool.cibuildwheel]
-test-command = "pytest ."
+test-command = "pytest tests"
 test-requires = "pytest"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

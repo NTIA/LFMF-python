@@ -4,14 +4,31 @@ from enum import IntEnum
 from .proplib_loader import PropLibCDLL
 
 
-class Result(Structure):
+class Polarization(IntEnum):
+    Horizontal = 0
+    Vertical = 1
+
+
+class SolutionMethod(IntEnum):
+    FlatEarthCurveCorrection = 0
+    ResidueSeries = 1
+
+
+class c_LFMFResult(Structure):
     # C Struct for library outputs
     _fields_ = [
-        ("A_btl__db", c_double),
-        ("E__dBuVm", c_double),
-        ("P_rx__dbm", c_double),
-        ("method", c_int),
+        ("A_btl__db", c_double),    # Basic transmission loss, in dB
+        ("E__dBuVm", c_double),     # Electic field strength, in db(uV/m)
+        ("P_rx__dbm", c_double),    # Received power, in dBm
+        ("method", c_int),          # Solution method used
     ]
+
+
+class LFMFResult(Structure):
+    A_btl__db: float = None    # Basic transmission loss, in dB
+    E__dBuVm: float = None     # Electic field strength, in db(uV/m)
+    P_rx__dbm: float = None    # Received power, in dBm
+    method: SolutionMethod = None       # Solution method used
 
 
 # Load the shared library
@@ -29,13 +46,8 @@ lib.LFMF.argtypes = (
     c_double,
     c_double,
     c_int,
-    POINTER(Result),
+    POINTER(c_LFMFResult),
 )
-
-
-class Polarization(IntEnum):
-    Horizontal = 0
-    Vertical = 1
 
 
 def LFMF(
@@ -48,7 +60,7 @@ def LFMF(
     epsilon: float,
     sigma: float,
     pol: Polarization,
-) -> Result:
+) -> LFMFResult:
     """
     Compute the Low Frequency / Medium Frequency (LF/MF) propagation prediction
 
@@ -67,7 +79,7 @@ def LFMF(
 
     :return:  In Result class.
     """
-    result = Result()
+    result = c_LFMFResult()
     lib.err_check(
         lib.LFMF(
             c_double(h_tx__meter),
@@ -78,9 +90,19 @@ def LFMF(
             c_double(d__km),
             c_double(epsilon),
             c_double(sigma),
-            c_int(int(pol)),
+            c_int(pol),
             byref(result),
         )
     )
+
+    return __convertResultStruct(result)
+
+
+def __convertResultStruct(c_result):
+    result = LFMFResult
+    result.A_btl__db = c_result.A_btl__db
+    result.E__dBuVm = c_result.E__dBuVm
+    result.P_rx__dbm = c_result.P_rx__dbm
+    result.method = SolutionMethod(c_result.method)
 
     return result
